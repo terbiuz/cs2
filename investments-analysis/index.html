@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CS2 скины: supply и кейсы</title>
+<meta name="description" content="Все 2 126 скинов CS2: сколько копий существует (FloatDB), цены по каждому wear, из каких кейсов и коллекций они выпадают, тренд цен и метки для долгосрока и краткосрока.">
+<meta property="og:title" content="CS2 скины: supply и кейсы">
+<meta property="og:description" content="Supply, цены по wear, статус кейсов, ликвидность и тренд для всех скинов CS2.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+  /* Site shell: one centered column; the dashboard below uses these tokens for color, type and spacing in both themes. */
+  :root {
+    --color-bg: #f3f5f8;
+    --color-panel: #ffffff;
+    --color-fg: #18202c;
+    --color-fg-muted: #5b6676;
+    --color-border-line: #dee3eb;
+    --color-ok: #1b7a44;
+    --color-warn: #9a5800;
+    --color-bad: #bf3329;
+    --s1: #2f6bd8;
+    --s2: #b56f00;
+    --s3: #7a4bd6;
+    --s4: #11826c;
+    --cds-chart-grid: #e7ebf1;
+    --cds-chart-axis: #b4bdc9;
+    --cds-chart-reference: #2f6bd8;
+    --cds-chart-muted: #9aa4b2;
+    --cds-surface-popover: #ffffff;
+    --cds-border: #d4dae3;
+    --cds-shadow-popover: 0 8px 24px rgba(16, 24, 40, 0.14);
+    --cds-text-secondary: #5b6676;
+    --cds-radius: 10px;
+    --cds-pad-xs: 4px; --cds-pad-sm: 8px; --cds-pad-md: 12px; --cds-pad-lg: 16px; --cds-pad-xl: 24px;
+    --cds-gap-xs: 4px; --cds-gap-sm: 8px; --cds-gap-md: 14px; --cds-gap-lg: 24px; --cds-gap-xl: 36px;
+    --cds-font-size-caption: 0.8125rem;
+    --cds-font-size-body: 0.9375rem;
+    --cds-font-size-heading: 1.0625rem;
+    --cds-font-size-title: 1.875rem;
+    --cds-font-weight-medium: 600;
+    --cds-dur-slow: 0.3s;
+    --cds-ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+    --font-anthropic-sans: "Golos Text", "Segoe UI", system-ui, sans-serif;
+    --font-anthropic-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --color-bg: #0f131a; --color-panel: #161c26; --color-fg: #e5e9f0; --color-fg-muted: #94a0b2; --color-border-line: #263041;
+      --color-ok: #4cc382; --color-warn: #e0a645; --color-bad: #f07167;
+      --s1: #6f9df2; --s2: #e0a645; --s3: #a888f3; --s4: #3fc3a5;
+      --cds-chart-grid: #222b39; --cds-chart-axis: #3a4659; --cds-chart-reference: #6f9df2; --cds-chart-muted: #5d6a7d;
+      --cds-surface-popover: #1c2330; --cds-border: #2e3949; --cds-shadow-popover: 0 8px 24px rgba(0, 0, 0, 0.45); --cds-text-secondary: #94a0b2;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --color-bg: #0f131a; --color-panel: #161c26; --color-fg: #e5e9f0; --color-fg-muted: #94a0b2; --color-border-line: #263041;
+    --color-ok: #4cc382; --color-warn: #e0a645; --color-bad: #f07167;
+    --s1: #6f9df2; --s2: #e0a645; --s3: #a888f3; --s4: #3fc3a5;
+    --cds-chart-grid: #222b39; --cds-chart-axis: #3a4659; --cds-chart-reference: #6f9df2; --cds-chart-muted: #5d6a7d;
+    --cds-surface-popover: #1c2330; --cds-border: #2e3949; --cds-shadow-popover: 0 8px 24px rgba(0, 0, 0, 0.45); --cds-text-secondary: #94a0b2;
+    color-scheme: dark;
+  }
+  html, body { margin: 0; }
+  body { background: var(--color-bg); color: var(--color-fg); font-family: var(--font-anthropic-sans); font-size: 15px; line-height: 1.5; }
+  [hidden] { display: none !important; }
+  #dash-root { max-width: 92rem; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 56px; display: flex; flex-direction: column; gap: 24px; }
+  .dash-skeleton { color: transparent !important; background: var(--color-border-line); border-radius: 6px; min-width: 4ch; display: inline-block; }
+  .site-foot { border-top: 1px solid var(--color-border-line); padding-top: 16px; display: flex; flex-direction: column; gap: 6px; font-size: 0.8125rem; color: var(--color-fg-muted); max-width: 80ch; }
+  .site-foot p { margin: 0; }
+  .site-foot a { color: var(--cds-chart-reference); }
+  .site-foot a:focus-visible { outline: 2px solid var(--cds-chart-reference); outline-offset: 2px; }
+  .load-error { color: var(--color-bad); font-size: 0.875rem; }
+</style>
+<script>
+  // A small stand-in for the Claude dashboard runtime: loads the JSON files, runs the calculations and redraws on change.
+  window.dash = (() => {
+    const FILES = { skins: 'data/skins.json', cases: 'data/sources.json', trends: 'data/trends.json' };
+    const loaded = {};
+    const calcs = {};
+    let cache = {};
+    const draws = [];
+    const subs = [];
+    let params = {};
+    let colors = [];
+    const blank = (status) => ({ status, data: [], columns: [], meta: [], refreshing: false });
+    function data(id) {
+      if (calcs[id]) {
+        if (cache[id]) return cache[id];
+        const ins = calcs[id].inputs.map(data);
+        const bad = ins.find((d) => d.status !== 'ok');
+        if (bad) return blank(bad.status === 'error' ? 'error' : 'loading');
+        try { cache[id] = { ...blank('ok'), data: calcs[id].fn(...ins.map((d) => d.data)) }; }
+        catch (e) { console.error(e); cache[id] = { ...blank('error'), message: String(e) }; }
+        return cache[id];
+      }
+      return loaded[id] || blank(FILES[id] ? 'loading' : 'missing');
+    }
+    function readColors() {
+      const cs = getComputedStyle(document.documentElement);
+      colors = ['--s1', '--s2', '--s3', '--s4'].map((v) => cs.getPropertyValue(v).trim() || '#888888');
+    }
+    let queued = false;
+    function render() {
+      queued = false;
+      readColors();
+      subs.forEach((fn) => { try { fn(); } catch (e) { console.error(e); } });
+      for (const [name, fn] of draws) {
+        document.querySelectorAll('[data-draw="' + name + '"]').forEach((el) => {
+          if (el.closest('[hidden]')) return;
+          try { fn(el); } catch (e) { console.error(e); }
+        });
+      }
+      const failed = Object.entries(loaded).filter(([, d]) => d.status === 'error').map(([id]) => id);
+      document.querySelectorAll('.load-error').forEach((el) => { el.hidden = !failed.length; });
+    }
+    function schedule() {
+      if (queued) return;
+      queued = true;
+      (document.readyState === 'loading' ? document.addEventListener.bind(document, 'DOMContentLoaded') : (f) => setTimeout(f, 0))(render);
+    }
+    Object.entries(FILES).forEach(([id, url]) => {
+      fetch(url)
+        .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then((rows) => { loaded[id] = { ...blank('ok'), data: rows }; cache = {}; schedule(); })
+        .catch((e) => { loaded[id] = { ...blank('error'), message: String(e) }; cache = {}; schedule(); });
+    });
+    let lastW = window.innerWidth;
+    window.addEventListener('resize', () => { if (window.innerWidth !== lastW) { lastW = window.innerWidth; schedule(); } });
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', schedule);
+    return {
+      data,
+      calc: (id, def) => { calcs[id] = def; cache = {}; schedule(); },
+      loader: () => {},
+      onData: (fn) => { subs.push(fn); schedule(); },
+      draw: (name, fn) => { draws.push([name, fn]); schedule(); },
+      params: () => ({ ...params }),
+      setParams: (o) => { for (const [k, v] of Object.entries(o)) { if (v == null) delete params[k]; else params[k] = v; } schedule(); },
+      resetParams: () => { params = {}; schedule(); },
+      setLink: () => {},
+      refresh: () => {},
+      get colors() { if (!colors.length) readColors(); return colors; },
+    };
+  })();
+</script>
+</head>
+<body>
+<main id="dash-root">
+<style>
+  .cs { display: flex; flex-direction: column; gap: var(--cds-gap-lg); font-family: var(--font-anthropic-sans); }
+  .cs-head { display: flex; flex-direction: column; gap: var(--cds-gap-xs); }
+  .cs-title { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; text-wrap: balance; }
+  .cs-lede { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-body); max-width: 70ch; }
+  .cs .cs-lede b { color: var(--color-fg); font-weight: 600; }
+  .cs-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); gap: var(--cds-gap-md); }
+  .cs-tile { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-xs); min-width: 0; }
+  .cs-tile-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .cs-tile-value { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .cs-tile-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .cs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); gap: var(--cds-gap-md); }
+  .cs-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-sm); min-width: 0; }
+  .cs-card h2 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); }
+  .cs-note { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); max-width: 75ch; }
+  .cs-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .cs-legend span { display: inline-flex; align-items: center; gap: var(--cds-gap-xs); }
+  .cs-sw { width: 0.6rem; height: 0.6rem; border-radius: 50%; display: inline-block; background: var(--cds-chart-muted); }
+  .cs-chart { position: relative; min-height: 340px; }
+  .cs-chart svg { display: block; }
+  .cs-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); max-width: 16rem; z-index: 2; }
+  .cs-tip-sub { color: var(--cds-text-secondary); }
+  .cs-scroll { overflow: auto; max-height: 34rem; border-top: 1px solid var(--color-border-line); }
+  .cs-scroll--tall { max-height: 44rem; }
+  .cs-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .cs-table th { position: sticky; top: 0; background: var(--color-panel); text-align: left; font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); white-space: nowrap; z-index: 1; }
+  .cs-table td { padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+  .cs-table .num { text-align: right; }
+  .cs-table th.num { text-align: right; }
+  .cs-table td.cs-name { white-space: normal; min-width: 12rem; }
+  .cs-table tbody tr { cursor: default; }
+  .cs-cases tbody tr { cursor: pointer; }
+  .cs-cases tbody tr:hover, .cs-skins tbody tr:hover { background: var(--color-bg); }
+  .cs-cases tbody tr.is-picked { outline: 2px solid var(--cds-chart-reference); outline-offset: -2px; }
+  .cs-sort { all: unset; cursor: pointer; display: inline-flex; gap: 0.2rem; align-items: center; }
+  .cs-sort:focus-visible { outline: 2px solid var(--cds-chart-reference); outline-offset: 2px; border-radius: 2px; }
+  .cs-sort::after { content: ""; width: 0.6em; }
+  th[aria-sort="ascending"] .cs-sort::after { content: "▲"; font-size: 0.7em; }
+  th[aria-sort="descending"] .cs-sort::after { content: "▼"; font-size: 0.7em; }
+  .cs-chip { display: inline-block; padding: 0.05rem 0.45rem; border-radius: 999px; font-size: var(--cds-font-size-caption); border: 1px solid currentColor; line-height: 1.4; }
+  .cs-muted { color: var(--color-fg-muted); }
+  .cs-sig { display: inline-flex; align-items: baseline; gap: 0.3rem; padding: 0.05rem 0.45rem; border-radius: 999px; font-size: var(--cds-font-size-caption); line-height: 1.4; border: 1px solid var(--color-border-line); color: var(--color-fg-muted); }
+  .cs-sig small { font-size: 0.85em; opacity: 0.75; font-variant-numeric: tabular-nums; }
+  .cs-sig--hi { color: var(--color-ok); border-color: currentColor; font-weight: 600; }
+  .cs-sig--mid { color: var(--color-fg); }
+  .cs-sig--lo { color: var(--color-fg-muted); }
+  .cs-sig--bad { color: var(--color-bad); border-color: currentColor; }
+  .cs-table td.cs-up { color: var(--color-ok); }
+  .cs-table td.cs-down { color: var(--color-bad); }
+  .cs-bar { width: 3rem; height: 0.4rem; border-radius: 999px; background: var(--cds-chart-grid); overflow: hidden; display: inline-block; }
+  .cs-bar i { display: block; height: 100%; background: var(--cds-chart-reference); border-radius: 999px; }
+  .cs-controls { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; }
+  .cs-controls input[type="search"], .cs-controls select { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-sm); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-bg); color: var(--color-fg); min-width: 0; }
+  .cs-controls input[type="search"] { flex: 1 1 14rem; }
+  .cs-check { display: inline-flex; align-items: center; gap: var(--cds-gap-xs); font-size: var(--cds-font-size-caption); }
+  .cs-btn { font: inherit; font-size: var(--cds-font-size-caption); padding: var(--cds-pad-xs) var(--cds-pad-sm); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-bg); color: var(--color-fg); cursor: pointer; }
+  .cs-btn:focus-visible { outline: 2px solid var(--cds-chart-reference); outline-offset: 2px; }
+  .cs-count { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .cs-method { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap: var(--cds-gap-md); }
+  .cs-method p { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .cs-method h3 { margin: 0 0 var(--cds-gap-xs); font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); }
+  [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+  [data-dash-source-state=empty] { color: transparent; }
+  @media (max-width: 760px) { .cs-sec { display: none; } }
+</style>
+
+<div class="cs">
+  <header class="cs-head" id="top">
+    <h1 class="cs-title">CS2 скины: supply и кейсы</h1>
+    <p class="cs-lede"><b data-draw="lede_fixed" data-source="summary" data-row="0" data-field="fixed">—</b> из <b data-draw="lede_total" data-source="summary" data-row="0" data-field="total">—</b> скинов CS2 больше не выпадают ни в дропе, ни в Armory: новые копии появляются только из уже выпавших кейсов, поэтому их supply почти не растёт.</p>
+  </header>
+
+  <section class="cs-tiles" id="summary" aria-label="Итоги">
+    <div class="cs-tile">
+      <span class="cs-tile-label">Скинов в гайде</span>
+      <span class="cs-tile-value dash-skeleton" data-draw="t_total" data-source="summary" data-row="0" data-field="total">—</span>
+      <span class="cs-tile-note">Все скины CS2: оружие, ножи и перчатки</span>
+    </div>
+    <div class="cs-tile">
+      <span class="cs-tile-label">Больше не выпадают</span>
+      <span class="cs-tile-value dash-skeleton" data-draw="t_fixed" data-source="summary" data-row="0" data-field="fixed">—</span>
+      <span class="cs-tile-note">Нет ни в дропе, ни в Armory</span>
+    </div>
+    <div class="cs-tile">
+      <span class="cs-tile-label">Дропается сейчас</span>
+      <span class="cs-tile-value dash-skeleton" data-draw="t_active" data-source="summary" data-row="0" data-field="active">—</span>
+      <span class="cs-tile-note">Supply растёт каждую неделю</span>
+    </div>
+    <div class="cs-tile">
+      <span class="cs-tile-label">Найдено в FloatDB</span>
+      <span class="cs-tile-value dash-skeleton" data-draw="t_supply" data-source="summary" data-row="0" data-field="supply_sum">—</span>
+      <span class="cs-tile-note">Копий этих скинов, которые видел CSFloat</span>
+    </div>
+  </section>
+
+  <div class="cs-grid">
+    <section class="cs-card" id="cases">
+      <h2>Кейсы и коллекции</h2>
+      <p class="cs-note">Нажмите на строку, чтобы показать в таблице ниже только скины из этого кейса или коллекции.</p>
+      <div class="cs-scroll">
+        <table class="cs-table cs-cases" data-source="case_stats" data-row-key="case">
+          <thead>
+            <tr>
+              <th data-field="case">Источник</th>
+              <th class="cs-sec" data-field="kind">Тип</th>
+              <th data-field="status">Статус</th>
+              <th class="num" data-field="skins">Скинов</th>
+              <th class="num cs-sec" data-field="specials">★ Ножи/перч.</th>
+              <th class="num" data-field="supply_sum">Supply скинов</th>
+            </tr>
+          </thead>
+          <tbody data-draw="cases_body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="cs-card" id="scatter">
+      <h2>Supply против цены</h2>
+      <p class="cs-note">Каждая точка — скин из текущей выборки таблицы. Слева внизу — мало копий и низкая цена. Обе оси логарифмические, цена — самый дешёвый доступный wear.</p>
+      <div class="cs-legend">
+        <span><i class="cs-sw" data-status="Дропается"></i>Дропается</span>
+        <span><i class="cs-sw" data-status="Armory"></i>Armory</span>
+        <span><i class="cs-sw" data-status="Убран недавно"></i>Убран недавно</span>
+        <span><i class="cs-sw" data-status="Не дропается"></i>Не дропается</span>
+      </div>
+      <div class="cs-chart" data-draw="scatter" data-source="skins scores"></div>
+    </section>
+  </div>
+
+  <section class="cs-card" id="skins">
+    <h2>Все скины</h2>
+    <p class="cs-note">Цены — референсные цены CSFloat в USD для каждого wear; пусто, если такого wear у скина нет или нет продаж. Supply — сколько копий скина нашла база FloatDB (все wear, включая StatTrak и сувениры). Значок «~» значит, что CSFloat округлил число до тысяч.</p>
+    <div class="cs-controls">
+      <input id="cs-q" type="search" placeholder="Поиск: AK-47, Fade, Gamma…" aria-label="Поиск по скинам">
+      <select id="cs-cat" aria-label="Тип оружия">
+        <option value="">Все типы</option>
+        <option value="Винтовка">Винтовки</option>
+        <option value="Снайперка">Снайперки</option>
+        <option value="Пистолет">Пистолеты</option>
+        <option value="ПП">ПП</option>
+        <option value="Тяжёлое">Тяжёлое</option>
+        <option value="Нож">★ Ножи</option>
+        <option value="Перчатки">★ Перчатки</option>
+      </select>
+      <select id="cs-kind" aria-label="Источник">
+        <option value="">Кейсы и коллекции</option>
+        <option value="Кейс">Только из кейсов</option>
+        <option value="Коллекция">Только из коллекций</option>
+      </select>
+      <select id="cs-status" aria-label="Статус источника">
+        <option value="">Любой статус</option>
+        <option value="Не дропается">Не дропается</option>
+        <option value="Убран недавно">Убран недавно</option>
+        <option value="Armory">Armory</option>
+        <option value="Дропается">Дропается</option>
+      </select>
+      <select id="cs-rarity" aria-label="Редкость">
+        <option value="">Любая редкость</option>
+        <option value="Covert">Covert</option>
+        <option value="Classified">Classified</option>
+        <option value="Restricted">Restricted</option>
+        <option value="Mil-Spec">Mil-Spec</option>
+        <option value="★ Rare Special">★ Rare Special</option>
+      </select>
+      <select id="cs-signal" aria-label="Сигнал">
+        <option value="">Любой сигнал</option>
+        <option value="lt">Долгосрок: сильный</option>
+        <option value="st">Краткосрок: сильный</option>
+        <option value="both">Сильный в обоих</option>
+        <option value="cheap">Дешевле аналогов</option>
+      </select>
+      <label class="cs-check"><input id="cs-st" type="checkbox"> Цены StatTrak™</label>
+      <button class="cs-btn cs-picked" type="button" hidden>Источник: <span data-draw="picked">—</span> ×</button>
+      <button class="cs-btn cs-reset" type="button">Сбросить</button>
+    </div>
+    <p class="cs-count" data-source="skins">Показано <b data-draw="shown">—</b> скинов</p>
+    <div class="cs-scroll cs-scroll--tall">
+      <table class="cs-table cs-skins" data-source="skins" data-row-key="id">
+        <thead>
+          <tr>
+            <th data-field="name" data-col="name"><button class="cs-sort" type="button" data-sort="name">Скин</button></th>
+            <th class="cs-sec" data-field="case" data-col="case"><button class="cs-sort" type="button" data-sort="case">Источник</button></th>
+            <th data-field="status" data-col="status"><button class="cs-sort" type="button" data-sort="status">Статус</button></th>
+            <th class="cs-sec" data-field="rarity" data-col="rarity"><button class="cs-sort" type="button" data-sort="rarity">Редкость</button></th>
+            <th class="num" data-field="supply" data-col="supply"><button class="cs-sort" type="button" data-sort="supply">Supply</button></th>
+            <th class="num cs-n" data-field="fn" data-col="fn"><button class="cs-sort" type="button" data-sort="fn">FN</button></th>
+            <th class="num cs-n" data-field="mw" data-col="mw"><button class="cs-sort" type="button" data-sort="mw">MW</button></th>
+            <th class="num cs-n" data-field="ft" data-col="ft"><button class="cs-sort" type="button" data-sort="ft">FT</button></th>
+            <th class="num cs-n cs-sec" data-field="ww" data-col="ww"><button class="cs-sort" type="button" data-sort="ww">WW</button></th>
+            <th class="num cs-n cs-sec" data-field="bs" data-col="bs"><button class="cs-sort" type="button" data-sort="bs">BS</button></th>
+            <th class="num cs-s" data-field="st_fn" data-col="st_fn" hidden><button class="cs-sort" type="button" data-sort="st_fn">ST FN</button></th>
+            <th class="num cs-s" data-field="st_mw" data-col="st_mw" hidden><button class="cs-sort" type="button" data-sort="st_mw">ST MW</button></th>
+            <th class="num cs-s" data-field="st_ft" data-col="st_ft" hidden><button class="cs-sort" type="button" data-sort="st_ft">ST FT</button></th>
+            <th class="num cs-s cs-sec" data-field="st_ww" data-col="st_ww" hidden><button class="cs-sort" type="button" data-sort="st_ww">ST WW</button></th>
+            <th class="num cs-s cs-sec" data-field="st_bs" data-col="st_bs" hidden><button class="cs-sort" type="button" data-sort="st_bs">ST BS</button></th>
+            <th class="num cs-sec" data-field="sales_volume" data-col="sales_volume"><button class="cs-sort" type="button" data-sort="sales_volume">Продажи</button></th>
+            <th class="num" data-source="scores" data-field="t7" data-col="t7"><button class="cs-sort" type="button" data-sort="t7">Тренд 7д</button></th>
+            <th class="num cs-sec" data-source="scores" data-field="t30" data-col="t30"><button class="cs-sort" type="button" data-sort="t30">Тренд 30д</button></th>
+            <th class="num" data-source="scores" data-field="liq" data-col="liq"><button class="cs-sort" type="button" data-sort="liq">Ликвидность</button></th>
+            <th class="num cs-sec" data-source="scores" data-field="cap" data-col="cap"><button class="cs-sort" type="button" data-sort="cap">Капитализация</button></th>
+            <th data-source="scores" data-field="lt_label" data-col="lt"><button class="cs-sort" type="button" data-sort="lt">Долгосрок</button></th>
+            <th data-source="scores" data-field="st_label" data-col="st"><button class="cs-sort" type="button" data-sort="st">Краткосрок</button></th>
+          </tr>
+        </thead>
+        <tbody data-draw="skins_body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="cs-card" id="method">
+    <h2>Как читать гайд</h2>
+    <div class="cs-method">
+      <div>
+        <h3>Ликвидность и капитализация</h3>
+        <p>Ликвидность — продажи на CSFloat, делённые на supply: какая доля всех копий недавно переходила из рук в руки. Чем выше, тем легче купить и продать без большой скидки. Капитализация — supply, умноженный на цену самого дешёвого wear. Маленькую капитализацию легче «разогнать» спросом, но и упасть она может быстрее.</p>
+      </div>
+      <div>
+        <h3>Долгосрок</h3>
+        <p>Оценка 0–100 для покупки «на годы». Больше всего весит статус источника: скин, который больше не выпадает, почти не допечатывается. Дальше идут малый supply среди скинов той же редкости, цена ниже аналогов с похожим supply и ликвидность, чтобы потом было кому продать.</p>
+      </div>
+      <div>
+        <h3>Краткосрок</h3>
+        <p>Оценка 0–100 для сделки на недели или месяцы. Главное здесь — ликвидность и тренд за 7 дней. Добавляются повод для роста (источник недавно убран из дропа или Armory, где его могут убрать) и цена ниже аналогов. Метка «Неликвид» значит, что продаж слишком мало для быстрой сделки.</p>
+      </div>
+      <div>
+        <h3>Тренд</h3>
+        <p>Насколько медианная цена продаж на Skinport за последние 7 или 30 дней выше или ниже медианы за 90 дней. Считается по самому продаваемому wear скина (видно при наведении), и только если продаж достаточно. Зелёный — цена растёт, красный — падает. Истории дольше 90 дней здесь нет, поэтому долгосрочная оценка тренд не учитывает.</p>
+      </div>
+      <div>
+        <h3>Метки</h3>
+        <p>Метка — место скина в общем рейтинге по оценке: «Сильный» — верхушка рейтинга, «Средний» — середина, «Слабый» — нижняя половина; точные пороги указаны в формуле. «Дешевле аналогов» — цена заметно ниже, чем у скинов той же редкости с похожим supply. Формулы открыты в источниках дашборда.</p>
+      </div>
+      <div>
+        <h3>Что значит supply</h3>
+        <p>Это число копий, которые FloatDB нашла в инвентарях Steam. Реальное количество больше: база видит не все инвентари. Но для сравнения скинов между собой цифра подходит хорошо.</p>
+      </div>
+      <div>
+        <h3>Статус источника</h3>
+        <p>«Дропается» — кейс или коллекция выпадает в еженедельном дропе, новые копии появляются постоянно. «Armory» — их можно получить за звёзды Armory Pass, supply тоже растёт. «Убран недавно» — источник вышел из дропа или Armory в 2025–2026 годах. «Не дропается» — давно не выпадает; у коллекций карт сувенирные версии могут добавляться из сувенирных наборов на мейджорах. Valve официальный список не публикует, статус взят из комьюнити-трекинга на осень 2026.</p>
+      </div>
+      <div>
+        <h3>Ограничения</h3>
+        <p>Это данные для сравнения, а не совет, что покупать. Цены скинов зависят от обновлений Valve, ивентов и рынка в целом. Ножи и перчатки выпадают из многих кейсов сразу: статус берётся по самому «живому» из них. Для ванильных ножей (без раскраски) supply не собран: поиск FloatDB по ним смешивает все раскраски. Для скинов из коллекций и части дешёвых Mil-Spec из кейсов supply тоже нет: CSFloat ограничил автоматический поиск, поэтому у них нет ликвидности и оценок.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  const STATUS_ORDER = { 'Дропается': 0, 'Armory': 1, 'Убран недавно': 2, 'Не дропается': 3 };
+  const statusColor = (s) => dash.colors[STATUS_ORDER[s] ?? 0];
+
+  dash.calc('summary', {
+    inputs: ['skins'],
+    title: 'Итоги по скинам',
+    description: 'Сколько скинов всего, сколько больше не выпадают, сколько дропается сейчас и сколько копий нашла FloatDB.',
+    fn: (skins) => [{
+      total: skins.length,
+      fixed: skins.filter((s) => s.status === 'Не дропается').length,
+      active: skins.filter((s) => s.status === 'Дропается').length,
+      supply_sum: skins.reduce((a, s) => a + (s.supply || 0), 0),
+    }],
+  });
+
+  dash.calc('case_stats', {
+    inputs: ['skins', 'cases'],
+    title: 'Скины и supply по кейсам и коллекциям',
+    description: 'Для каждого кейса и коллекции: тип, статус, число скинов и ножей/перчаток, сумма supply обычных скинов.',
+    fn: (skins, cases) => cases.map((c) => {
+      const own = skins.filter((s) => s.category !== 'Нож' && s.category !== 'Перчатки' && s.cases_all.split(' · ').includes(c.case));
+      return {
+        case: c.case,
+        kind: c.kind,
+        status: c.status,
+        skins: c.skins,
+        specials: c.specials,
+        supply_sum: own.some((s) => s.supply != null) ? own.reduce((a, s) => a + (s.supply || 0), 0) : null,
+      };
+    }),
+  });
+
+  dash.calc('scores', {
+    inputs: ['skins', 'trends'],
+    title: 'Метрики и сигналы',
+    description: 'Ликвидность = продажи / supply. Тренд = медиана цены за 7 (30) дней к медиане за 90 дней на Skinport, если продаж хватает. Долгосрок = статус источника 35 + малый supply среди той же редкости 25 + цена ниже аналогов 20 + ликвидность 20. Краткосрок = ликвидность 35 + тренд 7д 25 + повод для роста 20 + цена ниже аналогов 20. Метка по месту в рейтинге: топ-15% сильный, следующие 35% средний, остальные слабый.',
+    fn: (skins, trends) => {
+      const tr = new Map(trends.map((t) => [t.id, t]));
+      const pctChange = (a, b) => (a > 0 && b > 0 ? Math.round((a / b - 1) * 1000) / 10 : null);
+      const trendOf = (id) => {
+        const t = tr.get(id);
+        if (!t || t.vol90 < 10) return { t7: null, t30: null, wear: t ? t.wear : null };
+        return { t7: t.vol7 >= 3 ? pctChange(t.med7, t.med90) : null, t30: t.vol30 >= 5 ? pctChange(t.med30, t.med90) : null, wear: t.wear };
+      };
+      const groupOf = (s) => (s.category === 'Нож' || s.category === 'Перчатки' ? s.category : s.rarity);
+      const rankIn = (sorted, v) => {
+        let lo = 0, hi = sorted.length;
+        while (lo < hi) { const m = (lo + hi) >> 1; if (sorted[m] < v) lo = m + 1; else hi = m; }
+        return sorted.length > 1 ? lo / (sorted.length - 1) : 0.5;
+      };
+      const statusLT = { 'Не дропается': 1, 'Убран недавно': 0.85, 'Armory': 0.3, 'Дропается': 0 };
+      const catalyst = { 'Убран недавно': 1, 'Armory': 0.5, 'Не дропается': 0.4, 'Дропается': 0 };
+      const ok = skins.filter((s) => s.supply > 0 && s.min_price > 0);
+      const sup = {}, price = {};
+      ok.forEach((s) => { (sup[groupOf(s)] ||= []).push(s.supply); (price[groupOf(s)] ||= []).push(s.min_price); });
+      [sup, price].forEach((m) => Object.values(m).forEach((a) => a.sort((x, y) => x - y)));
+      const turns = ok.map((s) => s.sales_volume / s.supply).sort((x, y) => x - y);
+      const t7s = ok.map((s) => trendOf(s.id).t7).filter((v) => v != null).sort((x, y) => x - y);
+      const raw = new Map(ok.map((s) => {
+        const g = groupOf(s);
+        const scarcity = 1 - rankIn(sup[g], s.supply);
+        const value = (scarcity - rankIn(price[g], s.min_price) + 1) / 2;
+        const turnover = s.sales_volume / s.supply;
+        const liq = rankIn(turns, turnover);
+        const t = trendOf(s.id);
+        const momentum = t.t7 == null ? 0.4 : rankIn(t7s, t.t7);
+        return [s.id, {
+          liq: Math.round(turnover * 10000) / 100,
+          cap: Math.round(s.supply * s.min_price),
+          cheap: value >= 0.65,
+          lt: Math.round(35 * statusLT[s.status] + 25 * scarcity + 20 * value + 20 * liq),
+          st: Math.round(35 * liq + 25 * momentum + 20 * catalyst[s.status] + 20 * value),
+        }];
+      }));
+      const lts = [...raw.values()].map((r) => r.lt).sort((x, y) => x - y);
+      const sts = [...raw.values()].map((r) => r.st).sort((x, y) => x - y);
+      const label = (sorted, v) => { const p = rankIn(sorted, v); return p >= 0.85 ? 'Сильный' : p >= 0.5 ? 'Средний' : 'Слабый'; };
+      return skins.map((s) => {
+        const r = raw.get(s.id);
+        const t = trendOf(s.id);
+        if (!r) return { id: s.id, t7: t.t7, t30: t.t30, trend_wear: t.wear, liq: null, cap: null, cheap: null, lt: null, lt_label: 'Нет данных', st: null, st_label: 'Нет данных' };
+        return { id: s.id, t7: t.t7, t30: t.t30, trend_wear: t.wear, liq: r.liq, cap: r.cap, cheap: r.cheap, lt: r.lt, lt_label: label(lts, r.lt), st: r.st, st_label: s.sales_volume < 20 ? 'Неликвид' : label(sts, r.st) };
+      });
+    },
+  });
+
+  // Shared filter state and helpers for the drawings below.
+  const P = () => {
+    const p = { q: '', cat: '', kind: '', status: '', rarity: '', signal: '', st: false, sort: 'lt', dir: 'desc', case: null };
+    const raw = dash.params() || {};
+    for (const k of Object.keys(p)) if (raw[k] != null) p[k] = raw[k];
+    return p;
+  };
+  window.csState = P;
+  window.csFiltered = () => {
+    const sk = dash.data('skins');
+    const sc = dash.data('scores');
+    if (sk.status !== 'ok') return null;
+    const empty = { t7: null, t30: null, trend_wear: null, liq: null, cap: null, cheap: null, lt: null, lt_label: 'Нет данных', st: null, st_label: 'Нет данных' };
+    const score = new Map(sc.status === 'ok' ? sc.data.map((r) => [r.id, r]) : []);
+    const p = P();
+    const q = p.q.trim().toLowerCase();
+    let rows = sk.data.map((r) => ({ ...r, ...empty, ...(score.get(r.id) || {}) }));
+    const sig = p.signal;
+    rows = rows.filter((r) =>
+      (!sig || (sig === 'lt' && r.lt_label === 'Сильный') || (sig === 'st' && r.st_label === 'Сильный') ||
+        (sig === 'both' && r.lt_label === 'Сильный' && r.st_label === 'Сильный') || (sig === 'cheap' && r.cheap)) &&
+      (!p.cat || r.category === p.cat) &&
+      (!p.kind || r.kind === p.kind) &&
+      (!p.status || r.status === p.status) &&
+      (!p.rarity || r.rarity === p.rarity) &&
+      (!p.case || r.cases_all.split(' · ').includes(p.case)) &&
+      (!q || (r.name + ' ' + r.cases_all).toLowerCase().includes(q)));
+    const k = p.sort, sign = p.dir === 'asc' ? 1 : -1;
+    const val = (r) => (k === 'status' ? STATUS_ORDER[r.status] : r[k]);
+    rows.sort((a, b) => {
+      const va = val(a), vb = val(b);
+      if (va == null && vb == null) return 0;
+      if (va == null) return 1;
+      if (vb == null) return -1;
+      return typeof va === 'string' ? sign * va.localeCompare(vb) : sign * (va - vb);
+    });
+    return rows;
+  };
+  window.csFmt = {
+    pct: (v) => (v == null ? '' : d3.format('.2~f')(v) + '%'),
+    cap: (v) => (v == null ? '' : '$' + new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(v)),
+    usd: (v) => (v == null ? '' : '$' + (v >= 100 ? d3.format(',.0f')(v) : d3.format(',.2f')(v))),
+    int: (v) => (v == null ? '' : d3.format(',')(v)),
+    big: (v) => (v == null ? '—' : v >= 10000 ? new Intl.NumberFormat('ru', { notation: 'compact', maximumFractionDigits: 1 }).format(v) : d3.format(',')(v)),
+  };
+  window.csStatusColor = statusColor;
+
+  // Controls: listen and reflect state (values, hidden, aria) only.
+  const set = (o) => dash.setParams(o);
+  document.querySelectorAll('#cs-q').forEach((el) => el.addEventListener('input', () => set({ q: el.value })));
+  document.querySelectorAll('#cs-cat').forEach((el) => el.addEventListener('change', () => set({ cat: el.value || null })));
+  document.querySelectorAll('#cs-kind').forEach((el) => el.addEventListener('change', () => set({ kind: el.value || null })));
+  document.querySelectorAll('#cs-status').forEach((el) => el.addEventListener('change', () => set({ status: el.value || null })));
+  document.querySelectorAll('#cs-rarity').forEach((el) => el.addEventListener('change', () => set({ rarity: el.value || null })));
+  document.querySelectorAll('#cs-signal').forEach((el) => el.addEventListener('change', () => set({ signal: el.value || null })));
+  document.querySelectorAll('#cs-st').forEach((el) => el.addEventListener('change', () => set({ st: el.checked })));
+  document.querySelectorAll('.cs-picked').forEach((el) => el.addEventListener('click', () => set({ case: null })));
+  document.querySelectorAll('.cs-reset').forEach((el) => el.addEventListener('click', () => dash.resetParams()));
+  document.querySelectorAll('.cs-sort').forEach((el) => el.addEventListener('click', () => {
+    const p = P(), k = el.dataset.sort;
+    const firstDir = ['name', 'case', 'rarity', 'status'].includes(k) ? 'asc' : 'desc';
+    set({ sort: k, dir: p.sort === k ? (p.dir === 'asc' ? 'desc' : 'asc') : firstDir });
+  }));
+  document.querySelectorAll('.cs-cases').forEach((t) => t.addEventListener('click', (e) => {
+    const tr = e.target.closest('tr[data-key]');
+    if (!tr) return;
+    const name = tr.dataset.key;
+    set({ case: P().case === name ? null : name });
+    document.querySelectorAll('#skins').forEach((s) => s.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  }));
+
+  dash.onData(() => {
+    const p = P();
+    document.querySelectorAll('#cs-q').forEach((el) => { if (el !== document.activeElement) el.value = p.q; });
+    document.querySelectorAll('#cs-cat').forEach((el) => { el.value = p.cat || ''; });
+    document.querySelectorAll('#cs-kind').forEach((el) => { el.value = p.kind || ''; });
+    document.querySelectorAll('#cs-status').forEach((el) => { el.value = p.status || ''; });
+    document.querySelectorAll('#cs-rarity').forEach((el) => { el.value = p.rarity || ''; });
+    document.querySelectorAll('#cs-signal').forEach((el) => { el.value = p.signal || ''; });
+    document.querySelectorAll('#cs-st').forEach((el) => { el.checked = !!p.st; });
+    document.querySelectorAll('.cs-picked').forEach((el) => { el.hidden = !p.case; });
+    document.querySelectorAll('.cs-skins th.cs-n').forEach((el) => { el.hidden = !!p.st; });
+    document.querySelectorAll('.cs-skins th.cs-s').forEach((el) => { el.hidden = !p.st; });
+    document.querySelectorAll('.cs-skins th[data-col]').forEach((el) => {
+      if (el.dataset.col === p.sort) el.setAttribute('aria-sort', p.dir === 'asc' ? 'ascending' : 'descending');
+      else el.removeAttribute('aria-sort');
+    });
+    document.querySelectorAll('.cs-sw[data-status]').forEach((el) => { el.style.background = statusColor(el.dataset.status); });
+    const s = dash.data('summary');
+    document.querySelectorAll('.cs-tile-value').forEach((el) => el.classList.toggle('dash-skeleton', s.status !== 'ok' && s.status !== 'error'));
+  });
+</script>
+
+<script>
+  const one = (id, field, fmt) => (el) => {
+    const d = dash.data(id);
+    el.textContent = d.status === 'ok' && d.data[0] && d.data[0][field] != null ? fmt(d.data[0][field]) : '—';
+  };
+  dash.draw('lede_fixed', one('summary', 'fixed', (v) => d3.format(',')(v)));
+  dash.draw('lede_total', one('summary', 'total', (v) => d3.format(',')(v)));
+  dash.draw('t_total', one('summary', 'total', (v) => d3.format(',')(v)));
+  dash.draw('t_fixed', one('summary', 'fixed', (v) => d3.format(',')(v)));
+  dash.draw('t_active', one('summary', 'active', (v) => d3.format(',')(v)));
+  dash.draw('t_supply', one('summary', 'supply_sum', (v) => (v ? window.csFmt.big(v) : '—')));
+  dash.draw('picked', (el) => { el.textContent = window.csState().case || '—'; });
+
+  const chip = (status) => {
+    const c = document.createElement('span');
+    c.className = 'cs-chip';
+    c.style.color = window.csStatusColor(status);
+    c.textContent = status;
+    return c;
+  };
+  const td = (text, cls) => {
+    const t = document.createElement('td');
+    if (cls) t.className = cls;
+    if (text instanceof Node) t.append(text); else t.textContent = text;
+    return t;
+  };
+
+  dash.draw('cases_body', (el) => {
+    const d = dash.data('case_stats');
+    if (d.status !== 'ok') { el.replaceChildren(); return; }
+    const picked = window.csState().case;
+    const order = { 'Дропается': 0, 'Armory': 1, 'Убран недавно': 2, 'Не дропается': 3 };
+    const rows = [...d.data].sort((a, b) => order[a.status] - order[b.status] || (b.supply_sum ?? -1) - (a.supply_sum ?? -1) || a.case.localeCompare(b.case));
+    el.replaceChildren(...rows.map((r) => {
+      const tr = document.createElement('tr');
+      tr.dataset.key = r.case;
+      if (r.case === picked) tr.className = 'is-picked';
+      tr.append(td(r.case), td(r.kind, 'cs-sec cs-muted'), td(chip(r.status)), td(window.csFmt.int(r.skins), 'num'), td(window.csFmt.int(r.specials), 'num cs-sec'), td(r.supply_sum == null ? '' : window.csFmt.int(r.supply_sum), 'num'));
+      return tr;
+    }));
+  });
+
+  dash.draw('shown', (el) => {
+    const rows = window.csFiltered();
+    el.textContent = rows ? d3.format(',')(rows.length) : '—';
+  });
+
+  dash.draw('skins_body', (el) => {
+    const rows = window.csFiltered();
+    if (!rows) { el.replaceChildren(); return; }
+    const p = window.csState();
+    const F = window.csFmt;
+    const wears = p.st ? ['st_fn', 'st_mw', 'st_ft', 'st_ww', 'st_bs'] : ['fn', 'mw', 'ft', 'ww', 'bs'];
+    const secWear = { st_ww: 1, st_bs: 1, ww: 1, bs: 1 };
+    const frag = document.createDocumentFragment();
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = r.id;
+      const nameTd = td(r.name, 'cs-name');
+      const caseTd = td(r.case, 'cs-sec');
+      caseTd.title = r.cases_all;
+      const sig = (label, val) => {
+        const s = document.createElement('span');
+        s.className = 'cs-sig cs-sig--' + ({ 'Сильный': 'hi', 'Средний': 'mid', 'Слабый': 'lo', 'Неликвид': 'bad' }[label] || 'na');
+        s.textContent = label;
+        if (val != null) s.title = 'Оценка ' + val + ' из 100';
+        return s;
+      };
+      tr.append(nameTd, caseTd, td(chip(r.status)), td(r.rarity, 'cs-sec cs-muted'), td(r.supply == null ? '' : (r.supply_approx ? '~' : '') + F.int(r.supply), 'num'));
+      for (const w of wears) tr.append(td(F.usd(r[w]), 'num' + (secWear[w] ? ' cs-sec' : '')));
+      const trend = (v, cls) => {
+        const c = td(v == null ? '' : (v > 0 ? '+' : '') + d3.format('.1f')(v) + '%', 'num ' + cls + (v == null ? '' : v >= 3 ? ' cs-up' : v <= -3 ? ' cs-down' : ''));
+        if (v != null && r.trend_wear) c.title = 'По ' + r.trend_wear + ', медиана продаж Skinport к медиане за 90 дней';
+        return c;
+      };
+      tr.append(td(F.int(r.sales_volume), 'num cs-sec cs-muted'), trend(r.t7, ''), trend(r.t30, 'cs-sec'), td(F.pct(r.liq), 'num'), td(F.cap(r.cap), 'num cs-sec cs-muted'), td(sig(r.lt_label, r.lt)), td(sig(r.st_label, r.st)));
+      frag.append(tr);
+    }
+    el.replaceChildren(frag);
+  });
+
+  dash.draw('scatter', (el) => {
+    const rows = window.csFiltered();
+    el.replaceChildren();
+    if (!rows) return;
+    const pts = rows.filter((r) => r.supply > 0 && r.min_price > 0);
+    const W = Math.max(280, el.clientWidth), H = 340;
+    if (!pts.length) {
+      const msg = document.createElement('p');
+      msg.className = 'cs-note';
+      msg.textContent = 'В этой выборке нет скинов с найденным supply.';
+      el.append(msg);
+      return;
+    }
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Supply против цены');
+    const x = d3.scaleLog(d3.extent(pts, (d) => d.supply), [0, 1]).nice();
+    const y = d3.scaleLog(d3.extent(pts, (d) => d.min_price), [0, 1]).nice();
+    const fmtY = (v) => '$' + d3.format('~s')(v);
+    const fmtX = (v) => d3.format('~s')(v);
+    const lead = (t) => Math.round(t / Math.pow(10, Math.floor(Math.log10(t))));
+    const pick = (sc) => {
+      const all = sc.ticks();
+      const ones = all.filter((t) => lead(t) === 1);
+      return ones.length >= 3 ? ones : all.filter((t) => [1, 2, 5].includes(lead(t)));
+    };
+    const probe = svg.append('text').attr('font-size', 12).style('visibility', 'hidden');
+    const yTicks = pick(y);
+    const yw = d3.max(yTicks, (t) => probe.text(fmtY(t)).node().getComputedTextLength()) || 30;
+    probe.remove();
+    const m = { t: 10, r: 14, b: 34, l: yw + 12 };
+    x.range([m.l, W - m.r]);
+    y.range([H - m.b, m.t]);
+    const xAll = pick(x);
+    const step = Math.max(1, Math.ceil(xAll.length / Math.max(2, Math.floor((W - m.l - m.r) / 70))));
+    const xShown = xAll.filter((_, i) => i % step === 0);
+    const xTicks = xShown;
+    svg.append('g').selectAll('line').data(yTicks).join('line')
+      .attr('x1', m.l).attr('x2', W - m.r).attr('y1', (d) => y(d)).attr('y2', (d) => y(d))
+      .attr('stroke', 'var(--cds-chart-grid)').attr('stroke-width', 1);
+    svg.append('g').selectAll('text').data(yTicks).join('text')
+      .attr('x', m.l - 8).attr('y', (d) => y(d)).attr('dy', '0.32em').attr('text-anchor', 'end')
+      .attr('fill', 'var(--color-fg-muted)').attr('font-size', 12).text(fmtY);
+    svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', H - m.b).attr('y2', H - m.b).attr('stroke', 'var(--cds-chart-axis)');
+    svg.append('g').selectAll('text').data(xShown.length >= 2 ? xShown : xTicks).join('text')
+      .attr('x', (d) => x(d)).attr('y', H - m.b + 16).attr('text-anchor', 'middle')
+      .attr('fill', 'var(--color-fg-muted)').attr('font-size', 12).text(fmtX);
+    svg.append('text').attr('x', W - m.r).attr('y', H - 4).attr('text-anchor', 'end')
+      .attr('fill', 'var(--color-fg-muted)').attr('font-size', 12).text('supply, копий →');
+    const order = { 'Дропается': 0, 'Armory': 1, 'Убран недавно': 2, 'Не дропается': 3 };
+    const sorted = [...pts].sort((a, b) => order[b.status] - order[a.status]);
+    svg.append('g').selectAll('circle').data(sorted).join('circle')
+      .attr('cx', (d) => x(d.supply)).attr('cy', (d) => y(d.min_price)).attr('r', 3)
+      .attr('fill', (d) => window.csStatusColor(d.status)).attr('fill-opacity', 0.7);
+    const hl = svg.append('circle').attr('r', 6).attr('fill', 'none').attr('stroke-width', 2).style('display', 'none');
+    const tip = d3.select(el).append('div').attr('class', 'cs-tip').style('display', 'none');
+    const delaunay = d3.Delaunay.from(sorted, (d) => x(d.supply), (d) => y(d.min_price));
+    svg.on('pointermove', (ev) => {
+      const [mx, my] = d3.pointer(ev);
+      const d = sorted[delaunay.find(mx, my)];
+      if (!d || Math.hypot(x(d.supply) - mx, y(d.min_price) - my) > 30) { hl.style('display', 'none'); tip.style('display', 'none'); return; }
+      hl.style('display', null).attr('cx', x(d.supply)).attr('cy', y(d.min_price)).attr('stroke', window.csStatusColor(d.status));
+      tip.style('display', null).replaceChildren();
+      tip.append('div').text(d.name);
+      tip.append('div').attr('class', 'cs-tip-sub').text(d.case + ' · ' + d.status);
+      tip.append('div').text('Supply: ' + d3.format(',')(d.supply) + ' · от ' + window.csFmt.usd(d.min_price));
+      if (d.liq != null) tip.append('div').text('Ликвидность: ' + window.csFmt.pct(d.liq));
+      if (d.lt != null) tip.append('div').text('Долгосрок: ' + d.lt_label + ' · Краткосрок: ' + d.st_label);
+      const tw = tip.node().offsetWidth, th = tip.node().offsetHeight;
+      const px = (x(d.supply) / W) * el.clientWidth, py = (y(d.min_price) / H) * el.clientHeight;
+      tip.style('left', Math.min(Math.max(0, px + 12), el.clientWidth - tw) + 'px').style('top', Math.max(0, py - th - 10) + 'px');
+    });
+    svg.on('pointerleave', () => { hl.style('display', 'none'); tip.style('display', 'none'); });
+  });
+</script>
+
+<footer class="site-foot">
+  <p class="load-error" hidden>Не удалось загрузить данные. Обновите страницу.</p>
+  <p>Данные: <a href="https://csfloat.com/db" rel="noopener">CSFloat</a> (цены по wear, объём продаж, supply из FloatDB) и <a href="https://skinport.com" rel="noopener">Skinport</a> (тренд цен за 7, 30 и 90 дней), снимок 3 ноября 2026. Статус кейсов и коллекций взят из комьюнити-трекинга (bo5.gg, tradeit.gg, csprofit.gg): Valve официальный список не публикует.</p>
+  <p>Supply собран для 1 258 из 2 126 скинов. Для скинов из коллекций и части дешёвых Mil-Spec из кейсов его пока нет.</p>
+  <p>Это не финансовый совет. Метки — правило сортировки по данным, а цены скинов могут резко меняться из-за обновлений Valve и настроения рынка.</p>
+  <p>Сайт не связан с Valve, CSFloat или Skinport.</p>
+  <p><a href="../">← Все проекты CS2</a></p>
+</footer>
+</main>
+</body>
+</html>
