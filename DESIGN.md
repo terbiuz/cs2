@@ -140,12 +140,12 @@ components:
   reason-list:
     textColor: "{colors.ash}"
     typography: "{typography.label}"
-    width: "13.5rem"
+    width: "13rem"
   table-row:
     backgroundColor: "{colors.panel}"
     textColor: "{colors.bone}"
     typography: "{typography.data}"
-    padding: "0 6px"
+    padding: "0 5px"
     height: "48px"
   table-row-hover:
     backgroundColor: "{colors.panel-raised}"
@@ -276,10 +276,10 @@ Four tiles acting as filter toggles (`aria-pressed`), each a big Oswald count ov
 - **Stamps:** outlined uppercase tags with a 6.8rem minimum width so a column of them aligns. "No longer drops" is lime-outlined; "recently removed" orange; Armory violet; "drops" Rule Strong with Ash text.
 - **Codes:** SSP is a Bone-filled tag with Ground text; SP is a Bone outline.
 - **Signals:** «Сильный» lime fill; «Средний» Bone text; «Слабый» and «Нет данных» Ash; «Неликвид» Ember Down text.
-- **Reasons:** under each long-term and short-term signal, up to three plain-language reasons in Onest 12px Ash, ordered by their weight in the score. Each line starts with a bold sign: lime «+» for a plus, Ember «−» for a minus. A middling label with nothing notable says «ничего не выделяется» without a sign. The reasons column is 13.5rem wide (12rem below 1760px) so the whole board fits at 1694px.
+- **Pluses and minuses:** one «Плюсы и минусы» column after the two signals. Each factor appears at most once, in a fixed order: supply against the same rarity, price against similar skins, number of sales, 7-day trend. Status is never repeated there because it has its own column. Onest 12px Ash; each line starts with a bold sign, lime «+» or Ember «−». A skin with nothing notable reads «ничего не выделяется» without a sign. The column is 13rem wide (11rem below 1760px).
 
 ### Data Table
-Panel background, rows of at least 48px divided by 1px Rule (rows with reasons grow to about 86px), Panel Raised on hover. Column heads are sort buttons in Oswald 500 uppercase Ash; the sorted column turns lime with a direction caret. Supply carries a 44×6px log-scale bar in lime on a Chart Grid track. The name column is 19rem; long knife names wrap and the SSP or SP code follows the last word.
+Panel background, rows of at least 48px divided by 1px Rule (two or three reasons grow a row to 62–93px), Panel Raised on hover. Column heads are sort buttons in Oswald 500 uppercase Ash; the sorted column turns lime with a direction caret. Supply carries a 44×6px log-scale bar in lime on a Chart Grid track. «Продаж» (count of CSFloat sales) and «Ликвидность» (sales as a share of supply) sit side by side. The name column is 18rem (17.5rem below 1760px); long knife names wrap and the SSP or SP code follows the last word. At 1694px and wider every column fits without sideways scrolling.
 
 ## Do's and Don'ts
 
