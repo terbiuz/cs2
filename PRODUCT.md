@@ -12,7 +12,7 @@ Viewers of the terbiuz YouTube channel who open the site from a link in a video 
 
 ## Product Purpose
 
-One place that lists every CS2 skin (2,126 finishes: weapons, knives, gloves) with the facts that matter for holding skins as an investment: how many copies exist (supply found by CSFloat FloatDB), the CSFloat reference price for each wear and for StatTrak, which case or collection the skin comes from and whether that source still drops, liquidity (sales divided by supply), market cap, the Skinport price trend over 7 and 30 days against 90 days, and transparent long-term and short-term labels. Success: a viewer finds the skins worth a closer look in a minute and understands why.
+One place that lists every CS2 skin (2,126 finishes: weapons, knives, gloves) with the facts that matter for holding skins as an investment: how many copies exist (supply found by CSFloat FloatDB), the CSFloat reference price for each wear and for StatTrak, which case or collection the skin comes from and whether that source still drops, liquidity (sales divided by supply), the Skinport price trend over 7 and 30 days against 90 days, and transparent long-term and short-term labels, each with its plus and minus reasons written out. Supply is compared within one rarity; price is compared with skins of the same rarity and weapon type (knives and gloves: the same model), wear against wear. Success: a viewer finds the skins worth a closer look in a minute and understands why.
 
 ## Positioning
 
@@ -27,10 +27,10 @@ It joins supply counts with the drop status of the skin's source, so a viewer se
 ## Capabilities and Constraints
 
 - Static HTML, CSS and JavaScript on GitHub Pages; no build step; d3 v7 loaded from cdnjs; data in `data/skins.json` (about 1.1 MB), `data/sources.json`, `data/trends.json`.
-- Interface language is Russian; skin, case and collection names stay in English as in the game; prices are in USD.
+- Interface language is Russian; skin, case and collection names stay in English as in the game; the term «supply» stays in English by the owner's choice; rarities use the Russian game names (Тайное, Засекреченное, Запрещённое, Армейское, Промышленное, Ширпотреб); prices are in USD.
 - Features to keep: search, filters (weapon type, case or collection, drop status, rarity, signal), StatTrak price toggle, sortable table of all skins, case and collection table that filters the skin table, supply-versus-price scatter plot, summary figures, method explanation.
 - Drop statuses: drops weekly, Armory, recently removed, no longer drops.
-- Supply is missing for 758 collection skins, 89 cheap Mil-Spec case skins and 20 vanilla knives; the page must say so rather than hide it.
+- Supply is still missing for some skins (373 of 2,126 on 3 November 2026: mostly cheap collection skins, some Mil-Spec case skins and the vanilla knives); the page counts them from the data and says so rather than hiding it.
 - Must show data sources (CSFloat, Skinport, community drop-pool tracking), the snapshot date, a not-financial-advice note, and that the site is not affiliated with Valve, CSFloat or Skinport.
 
 ## Brand Commitments

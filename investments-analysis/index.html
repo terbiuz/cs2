@@ -72,14 +72,21 @@ th[aria-sort] .sort svg { opacity: 1; }
 th[aria-sort="ascending"] .sort svg { transform: rotate(180deg); }
 .skin { display: grid; grid-template-columns: 10px minmax(0, 1fr); gap: 1px 10px; align-items: center; white-space: nowrap; min-width: 21rem; }
 .skin .sw { width: 10px; height: 10px; grid-row: 1 / span 2; }
-.skin .nm { display: flex; align-items: center; gap: 8px; }
-.skin small { grid-column: 2; overflow: hidden; text-overflow: ellipsis; max-width: 24rem; }
+.skin .nm { display: block; }
+.skin .nm .code { display: inline-block; margin-left: 8px; vertical-align: 1px; white-space: nowrap; }
+.skin small { grid-column: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .r-consumer { background: var(--r-consumer); } .r-industrial { background: var(--r-industrial); } .r-milspec { background: var(--r-milspec); } .r-restricted { background: var(--r-restricted); }
 .r-classified { background: var(--r-classified); } .r-covert { background: var(--r-covert); } .r-contraband { background: var(--r-contraband); } .r-special { background: var(--r-special); }
 .sort-m { display: none; }
-.bar { display: inline-block; vertical-align: middle; width: 52px; height: 6px; position: relative; margin-left: 8px; }
+.bar { display: inline-block; vertical-align: middle; width: 44px; height: 6px; position: relative; margin-left: 8px; }
 .bar i { position: absolute; inset: 0 auto 0 0; }
 .na { opacity: 0.4; }
+.why { list-style: none; margin: 4px 0 0; padding: 0; white-space: normal; width: 13.5rem; }
+.why li { position: relative; padding-left: 15px; }
+.why li::before { position: absolute; left: 0; top: 0; content: "+"; }
+.why li.con::before { content: "−"; }
+.why li.neu { padding-left: 0; }
+.why li.neu::before { content: none; }
 .up { color: var(--up); } .down { color: var(--down); }
 .skel td { height: 44px; }
 .skel span { display: block; height: 10px; width: 70%; margin-left: auto; background: var(--skeleton); }
@@ -108,6 +115,10 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
 .method { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 48px; margin-top: 18px; }
 .method h3 { margin: 0 0 6px; }
 .method p { margin: 0; max-width: 68ch; }
+.method p + p, .checks + p { margin-top: 8px; }
+.checks { list-style: none; margin: 8px 0 0; padding: 0; max-width: 68ch; display: grid; gap: 3px; }
+.checks li { position: relative; padding-left: 18px; }
+.checks li::before { position: absolute; left: 0; content: "+"; }
 .foot { padding-block: 40px 56px; display: grid; gap: 6px; font-size: 13px; }
 .foot p { margin: 0; max-width: 90ch; }
 .foot a { color: inherit; text-underline-offset: 3px; }
@@ -135,9 +146,10 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
   .skins td.c-w.na, .skins td.c-t.na { display: none; }
   .sort-m { display: block; flex: 1 1 100%; }
   .count-line .hint, .topnav .opt { display: none; }
-  .skins td.c-30, .skins td.c-cap { display: block; }
+  .skins td.c-30 { display: block; }
+  .skins td.c-sig { grid-column: 1 / -1; padding-block: 0 !important; }
+  .why { width: auto; }
   .skin { min-width: 0; white-space: normal; }
-  .skin .nm { flex-wrap: wrap; }
   .skin .sw { align-self: start; margin-top: 6px; }
   .src td.l:first-child { min-width: 10.5rem; }
   .bar { display: none; }
@@ -191,9 +203,10 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
 .world-brutal .stamp.removed { border-color: var(--st-removed); color: var(--st-removed); }
 .world-brutal .stamp.armory { border-color: var(--st-armory); color: var(--st-armory); }
 .world-brutal .table-box { border: 1px solid var(--rule); background: var(--panel); }
-.world-brutal .skins th { background: var(--panel); font-family: var(--f-display); font-weight: 500; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); padding: 12px 7px 10px; border-bottom: 1px solid var(--rule2); }
+.world-brutal .skins th { background: var(--panel); font-family: var(--f-display); font-weight: 500; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); padding: 12px 6px 10px; border-bottom: 1px solid var(--rule2); }
 .world-brutal .skins th[aria-sort] { color: var(--lime); }
-.world-brutal .skins td { padding: 0 7px; height: 48px; border-bottom: 1px solid var(--rule); font-size: 14px; }
+.world-brutal .skins td { padding: 0 6px; height: 48px; border-bottom: 1px solid var(--rule); font-size: 14px; }
+.world-brutal .skins td.c-sig { padding-block: 7px; }
 .world-brutal .skins tbody tr:hover td { background: var(--panel2); }
 .world-brutal .skin b { font-weight: 600; font-size: 15px; }
 .world-brutal .skin small { font-size: 12.5px; color: var(--muted); }
@@ -217,7 +230,11 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
 .world-brutal .src tbody tr:hover td { background: var(--panel2); }
 .world-brutal .src tbody tr.on td { background: var(--panel2); box-shadow: inset 0 -2px 0 var(--lime); }
 .world-brutal .method h3 { font-family: var(--f-display); font-weight: 600; font-size: 1.25rem; text-transform: uppercase; letter-spacing: 0.03em; }
-.world-brutal .method p { color: var(--muted); }
+.world-brutal .method p, .world-brutal .checks { color: var(--muted); }
+.world-brutal .checks li::before { color: var(--up); font-weight: 700; }
+.world-brutal .why { font-size: 12px; line-height: 1.3; color: var(--muted); }
+.world-brutal .why li::before { font-weight: 700; color: var(--up); }
+.world-brutal .why li.con::before { color: var(--down); }
 .world-brutal .foot { color: var(--muted); border-top: 1px solid var(--rule); margin-top: 56px; }
 .world-brutal .empty button { border: 1px solid var(--lime); color: var(--lime); background: none; padding: 10px 18px; font-family: var(--f-display); text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; }
 @media (max-width: 760px) {
@@ -228,10 +245,13 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
   .world-brutal .table-box { border: 0; background: none; }
   .world-brutal .skins tr { border-bottom: 1px solid var(--rule); }
 }
-@media (min-width: 761px) { .world-brutal .skin { min-width: 17.5rem; } }
+@media (min-width: 761px) {
+  .world-brutal .skin { min-width: 0; width: 19rem; white-space: normal; }
+}
 
 .world-brutal .wrap { max-width: 112.5rem; }
 @media (min-width: 1700px) { .world-brutal .wrap { padding-left: 40px; padding-right: 40px; } }
+@media (min-width: 761px) and (max-width: 1759px) { .world-brutal .why { width: 12rem; } }
 .world-brutal .skins tbody tr:hover td:first-child { background: var(--panel2); }
 
 </style>
@@ -265,7 +285,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
         <button class="preset" aria-pressed="false" data-signal="" type="button"><b id="cnt-all">—</b><span>Все скины</span></button>
         <button class="preset" aria-pressed="false" data-signal="lt" type="button"><b id="cnt-lt">—</b><span>Сильный долгосрок</span></button>
         <button class="preset" aria-pressed="false" data-signal="st" type="button"><b id="cnt-st">—</b><span>Сильный краткосрок</span></button>
-        <button class="preset" aria-pressed="false" data-signal="cheap" type="button"><b id="cnt-cheap">—</b><span>Дешевле аналогов</span></button>
+        <button class="preset" aria-pressed="false" data-signal="cheap" type="button"><b id="cnt-cheap">—</b><span>Дешевле похожих</span></button>
       </div>
     </div>
   </div>
@@ -282,7 +302,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
         <option value="">Любой статус</option><option value="Не дропается">Не дропается</option><option value="Убран недавно">Убран недавно</option><option value="Armory">Armory</option><option value="Дропается">Дропается</option>
       </select>
       <select id="f-rarity" aria-label="Редкость">
-        <option value="">Любая редкость</option><option value="Covert">Covert</option><option value="Classified">Classified</option><option value="Restricted">Restricted</option><option value="Mil-Spec">Mil-Spec</option><option value="Industrial">Industrial</option><option value="Consumer">Consumer</option><option value="★ Rare Special">★ Ножи и перчатки</option>
+        <option value="">Любая редкость</option><option value="Covert">Тайное</option><option value="Classified">Засекреченное</option><option value="Restricted">Запрещённое</option><option value="Mil-Spec">Армейское</option><option value="Industrial">Промышленное</option><option value="Consumer">Ширпотреб</option><option value="★ Rare Special">★ Ножи и перчатки</option>
       </select>
       <select id="sort-m" class="sort-m" aria-label="Сортировка">
         <option value="lt:desc">Сначала сильный долгосрок</option><option value="st:desc">Сначала сильный краткосрок</option><option value="supply:asc">Меньше всего копий</option><option value="t7:desc">Сильнее всего выросли за 7 дней</option><option value="liq:desc">Самые ликвидные</option><option value="min:asc">Сначала дешёвые</option><option value="min:desc">Сначала дорогие</option><option value="name:asc">По названию</option>
@@ -292,7 +312,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
       <button class="reset" id="reset" type="button">Сбросить фильтры</button>
     </div>
     <p class="legend">
-      <span><i class="code ssp">SSP</i>5% самых редких в своей группе</span>
+      <span><i class="code ssp">SSP</i>5% скинов с самым малым supply в своей редкости</span>
       <span><i class="code sp">SP</i>следующие 15%</span>
       <span><i class="stamp fixed">Не дропается</i>новых копий почти нет</span>
       <span><i class="stamp removed">Убран недавно</i>кейс недавно ушёл из дропа</span>
@@ -314,7 +334,6 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
           <th><button class="sort" data-sort="t7" type="button">7 дней<svg viewBox="0 0 10 10"><path d="M1 3h8L5 8z" fill="currentColor"/></svg></button></th>
           <th class="c-30"><button class="sort" data-sort="t30" type="button">30 дней<svg viewBox="0 0 10 10"><path d="M1 3h8L5 8z" fill="currentColor"/></svg></button></th>
           <th><button class="sort" data-sort="liq" type="button">Ликвидность<svg viewBox="0 0 10 10"><path d="M1 3h8L5 8z" fill="currentColor"/></svg></button></th>
-          <th class="c-cap"><button class="sort" data-sort="cap" type="button">Капитализация<svg viewBox="0 0 10 10"><path d="M1 3h8L5 8z" fill="currentColor"/></svg></button></th>
           <th class="l"><button class="sort" data-sort="lt" type="button">Долгосрок<svg viewBox="0 0 10 10"><path d="M1 3h8L5 8z" fill="currentColor"/></svg></button></th>
           <th class="l"><button class="sort" data-sort="st" type="button">Краткосрок<svg viewBox="0 0 10 10"><path d="M1 3h8L5 8z" fill="currentColor"/></svg></button></th>
         </tr></thead>
@@ -347,10 +366,25 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
       <div id="method">
         <h2>Как считаем</h2>
         <div class="method">
-          <div><h3>Supply</h3><p>Сколько копий скина нашла база CSFloat FloatDB в инвентарях Steam, по всем wear вместе со StatTrak и сувенирами. Настоящее число больше, но для сравнения скинов между собой этого хватает. Знак «~» значит, что CSFloat округлил до тысяч.</p></div>
-          <div><h3>Статус источника</h3><p>«Дропается»: кейс или коллекция выпадает в недельном дропе. «Armory»: выдаётся за звёзды Armory Pass. «Убран недавно»: вышел из дропа или Armory в 2025–2026 годах. «Не дропается»: давно не выпадает. Valve официальный список не публикует, статус взят из комьюнити-трекинга.</p></div>
-          <div><h3>Ликвидность и капитализация</h3><p>Ликвидность показывает, какая доля копий недавно сменила владельца: это продажи на CSFloat, делённые на supply. Капитализация равна supply, умноженному на цену самого дешёвого wear.</p></div>
-          <div><h3>Долгосрок и краткосрок</h3><p>Долгосрок: статус источника 35%, малый supply среди скинов той же редкости 25%, цена ниже аналогов 20%, ликвидность 20%. Краткосрок: ликвидность 35%, тренд за 7 дней 25%, повод для роста 20%, цена ниже аналогов 20%. «Сильный» означает лучшие 15% по оценке, «Средний» следующие 35%. Это правило сортировки, а не совет, что покупать.</p></div>
+          <div><h3>Supply</h3><p>Сколько копий скина существует. Копия — это один предмет в чьём-то инвентаре: каждый раз, когда скин выпадает из кейса или получается контрактом, копий становится на одну больше. Число берём из CSFloat FloatDB, по всем wear вместе со StatTrak и сувенирами. Настоящее число больше, но для сравнения скинов между собой этого хватает. Знак «~» значит, что CSFloat округлил до тысяч.</p></div>
+          <div><h3>Похожие скины</h3><p>Supply сравниваем внутри одной редкости: тайное с тайным, армейское с армейским, ножи с ножами. Шансы выпадения у редкостей разные: армейское выпадает примерно в 80% открытий, тайное в 0,64%. Цену сравниваем со скинами той же редкости и того же типа оружия (винтовки с винтовками, ножи одной модели), а каждый wear с тем же wear. «Дешевле похожих» значит, что по цене скин стоит среди них ниже, чем по редкости.</p></div>
+          <div><h3>Долгосрок</h3><p>Держать месяцы и годы. Признаки в порядке важности:</p>
+            <ul class="checks">
+              <li>больше не дропается: новых копий нет, а старые уходят из игры;</li>
+              <li>копий мало для своей редкости;</li>
+              <li>дешевле похожих скинов;</li>
+              <li>часто продаётся, значит, потом получится продать.</li>
+            </ul></div>
+          <div><h3>Краткосрок</h3><p>Держать дни и недели. Признаки в порядке важности:</p>
+            <ul class="checks">
+              <li>часто продаётся: быстро купить и быстро продать;</li>
+              <li>цена растёт последние 7 дней;</li>
+              <li>есть повод для роста: скин недавно убрали из дропа;</li>
+              <li>дешевле похожих скинов.</li>
+            </ul>
+            <p>Рост должен перекрыть комиссию: Steam берёт 15%, CSFloat около 2%.</p></div>
+          <div><h3>Метки</h3><p>«Сильный» — лучшие 15% скинов по сумме признаков, «Средний» — следующие 35%, «Слабый» — остальные. «Неликвид» — меньше 20 продаж на CSFloat. Под меткой написано, что сработало: плюсы и минусы. Это правило сортировки, а не совет, что покупать.</p></div>
+          <div><h3>Статус и ликвидность</h3><p>«Дропается»: кейс или коллекция выпадает в недельном дропе. «Armory»: выдаётся за звёзды Armory Pass. «Убран недавно»: вышел из дропа или Armory в 2025–2026 годах. «Не дропается»: давно не выпадает. Valve официальный список не публикует, статус взят из комьюнити-трекинга. Ликвидность — доля копий, которая недавно сменила владельца: продажи на CSFloat, делённые на supply.</p></div>
         </div>
       </div>
     </div>
@@ -359,7 +393,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
 
 <footer class="foot wrap">
   <p>Данные: <a href="https://csfloat.com/db" rel="noopener">CSFloat</a> (цены по wear, продажи, supply из FloatDB) и <a href="https://skinport.com" rel="noopener">Skinport</a> (тренд цен за 7, 30 и 90 дней), снимок 3 ноября 2026. Статус кейсов по комьюнити-трекингу (bo5.gg, tradeit.gg, csprofit.gg).</p>
-  <p>Supply собран для 1 258 из 2 126 скинов: для скинов из коллекций, части дешёвых Mil-Spec и ванильных ножей его пока нет.</p>
+  <p>Supply собран для <span id="sup-n">—</span> из 2 126 скинов: для части скинов из коллекций, дешёвых армейских и ванильных ножей его пока нет.</p>
   <p>Это не финансовый совет. Цены скинов могут резко меняться из-за обновлений Valve и настроения рынка. Сайт не связан с Valve, CSFloat или Skinport.</p>
   <p><a href="../">Все проекты CS2 от terbiuz</a></p>
 </footer>
@@ -382,54 +416,81 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
   const STATUS = { 'Дропается': 'drop', 'Armory': 'armory', 'Убран недавно': 'removed', 'Не дропается': 'fixed' };
   const STATUS_ORDER = { 'Дропается': 0, 'Armory': 1, 'Убран недавно': 2, 'Не дропается': 3 };
   const RARITY = { 'Consumer': 'consumer', 'Industrial': 'industrial', 'Mil-Spec': 'milspec', 'Restricted': 'restricted', 'Classified': 'classified', 'Covert': 'covert', 'Contraband': 'contraband', '★ Rare Special': 'special' };
+  const RARITY_RU = { 'Consumer': 'Ширпотреб', 'Industrial': 'Промышленное', 'Mil-Spec': 'Армейское', 'Restricted': 'Запрещённое', 'Classified': 'Засекреченное', 'Covert': 'Тайное', 'Contraband': 'Контрабанда', '★ Rare Special': '★ Нож или перчатки' };
   const SIG = { 'Сильный': 'hi', 'Средний': 'mid', 'Слабый': 'lo', 'Неликвид': 'bad', 'Нет данных': 'na' };
   const DEFAULTS = { q: '', cat: '', kind: '', status: '', rarity: '', signal: '', st: false, sort: 'lt', dir: 'desc', src: '' };
   const S = { ...DEFAULTS };
   let SKINS = null, SOURCES = null, M = new Map(), LOGMIN = 0, LOGMAX = 1;
 
-  // Metrics: liquidity, market cap, short-print code, value, long/short-term scores and labels.
+  // Metrics: liquidity, short-print code, value against similar skins, long/short-term scores, labels and the reasons behind them.
+  // Supply is compared within one rarity (drop odds differ by rarity). Price is compared among similar skins:
+  // same rarity and weapon type (knives and gloves: same model), wear against the same wear.
+  const RARITY_GEN = { 'Consumer': 'ширпотреба', 'Industrial': 'промышленных', 'Mil-Spec': 'армейских', 'Restricted': 'запрещённых', 'Classified': 'засекреченных', 'Covert': 'тайных', 'Нож': 'ножей', 'Перчатки': 'перчаток' };
+  const CAT_GEN = { 'Винтовка': 'винтовок', 'Снайперка': 'снайперок', 'Пистолет': 'пистолетов', 'ПП': 'ПП', 'Тяжёлое': 'дробовиков и пулемётов' };
   function compute(skins, trends) {
     const tr = new Map(trends.map((t) => [t.id, t]));
     const change = (a, b) => (a > 0 && b > 0 ? Math.round((a / b - 1) * 1000) / 10 : null);
-    const groupOf = (s) => (s.category === 'Нож' || s.category === 'Перчатки' ? s.category : s.rarity);
+    const special = (s) => s.category === 'Нож' || s.category === 'Перчатки';
+    const groupOf = (s) => (special(s) ? s.category : s.rarity === 'Contraband' ? 'Covert' : s.rarity);
+    const peerOf = (s) => (special(s) ? 'm:' + s.weapon : 'c:' + groupOf(s) + '|' + s.category);
     const rankIn = (sorted, v) => { let lo = 0, hi = sorted.length; while (lo < hi) { const m = (lo + hi) >> 1; if (sorted[m] < v) lo = m + 1; else hi = m; } return sorted.length > 1 ? lo / (sorted.length - 1) : 0.5; };
     const statusLT = { 'Не дропается': 1, 'Убран недавно': 0.85, 'Armory': 0.3, 'Дропается': 0 };
     const catalyst = { 'Убран недавно': 1, 'Armory': 0.5, 'Не дропается': 0.4, 'Дропается': 0 };
+    const WEARS = ['fn', 'mw', 'ft', 'ww', 'bs'];
+    const MIN_PEERS = 8;
     const ok = skins.filter((s) => s.supply > 0 && s.min_price > 0);
-    const sup = {}, price = {};
-    ok.forEach((s) => { (sup[groupOf(s)] ||= []).push(s.supply); (price[groupOf(s)] ||= []).push(s.min_price); });
-    [sup, price].forEach((m) => Object.values(m).forEach((a) => a.sort((x, y) => x - y)));
+    const sup = {}, peers = {};
+    const collect = (k, s) => { const p = (peers[k] ||= { sup: [], n: 0, ...Object.fromEntries(WEARS.map((w) => [w, []])) }); p.n++; p.sup.push(s.supply); WEARS.forEach((w) => s[w] > 0 && p[w].push(s[w])); };
+    ok.forEach((s) => { (sup[groupOf(s)] ||= []).push(s.supply); collect(peerOf(s), s); collect('g:' + groupOf(s), s); });
+    const sortAll = (a) => a.sort((x, y) => x - y);
+    Object.values(sup).forEach(sortAll);
+    Object.values(peers).forEach((p) => { sortAll(p.sup); WEARS.forEach((w) => sortAll(p[w])); });
+    const peerKey = (s) => (peers[peerOf(s)].n >= MIN_PEERS ? peerOf(s) : 'g:' + groupOf(s));
+    const peerName = (s, k) => (k.startsWith('m:') ? 'других ' + s.weapon : 'похожих ' + (k.startsWith('c:') ? CAT_GEN[s.category] : RARITY_GEN[groupOf(s)]));
+    const priceRank = (s, p) => { let sum = 0, n = 0; WEARS.forEach((w) => { if (s[w] > 0 && p[w].length >= 5) { sum += rankIn(p[w], s[w]); n++; } }); return n ? sum / n : 0.5; };
     const turns = ok.map((s) => s.sales_volume / s.supply).sort((x, y) => x - y);
     const trendOf = (id) => { const t = tr.get(id); if (!t || t.vol90 < 10) return { t7: null, t30: null }; return { t7: t.vol7 >= 3 ? change(t.med7, t.med90) : null, t30: t.vol30 >= 5 ? change(t.med30, t.med90) : null }; };
     const t7s = ok.map((s) => trendOf(s.id).t7).filter((v) => v != null).sort((x, y) => x - y);
     const out = new Map();
     for (const s of skins) {
       const t = trendOf(s.id);
-      const r = { t7: t.t7, t30: t.t30, liq: null, cap: null, cheap: false, code: '', lt: null, st: null, lt_label: 'Нет данных', st_label: 'Нет данных' };
+      const r = { t7: t.t7, t30: t.t30, liq: null, cheap: false, code: '', lt: null, st: null, lt_label: 'Нет данных', st_label: 'Нет данных', why_lt: [], why_st: [] };
       if (s.supply > 0 && s.min_price > 0) {
-        const g = groupOf(s);
-        const scarcity = 1 - rankIn(sup[g], s.supply);
-        const value = (scarcity - rankIn(price[g], s.min_price) + 1) / 2;
+        const scarcity = 1 - rankIn(sup[groupOf(s)], s.supply);
+        const k = peerKey(s), p = peers[k];
+        const value = (1 - rankIn(p.sup, s.supply) - priceRank(s, p) + 1) / 2;
         const turnover = s.sales_volume / s.supply;
         const liq = rankIn(turns, turnover);
         const momentum = t.t7 == null ? 0.4 : rankIn(t7s, t.t7);
         r.liq = Math.round(turnover * 10000) / 100;
-        r.cap = Math.round(s.supply * s.min_price);
         r.cheap = value >= 0.65;
         r.code = scarcity >= 0.95 ? 'SSP' : scarcity >= 0.8 ? 'SP' : '';
         r.lt = Math.round(35 * statusLT[s.status] + 25 * scarcity + 20 * value + 20 * liq);
         r.st = Math.round(35 * liq + 25 * momentum + 20 * catalyst[s.status] + 20 * value);
+        r.f = { scarcity, value, liq, peer: peerName(s, k) };
       }
       out.set(s.id, r);
     }
     const lts = [...out.values()].filter((r) => r.lt != null).map((r) => r.lt).sort((x, y) => x - y);
     const sts = [...out.values()].filter((r) => r.st != null).map((r) => r.st).sort((x, y) => x - y);
     const label = (sorted, v) => { const p = rankIn(sorted, v); return p >= 0.85 ? 'Сильный' : p >= 0.5 ? 'Средний' : 'Слабый'; };
+    const share = (v) => Math.max(1, Math.min(99, Math.round(v * 100)));
     for (const s of skins) {
       const r = out.get(s.id);
       if (r.lt == null) continue;
       r.lt_label = label(lts, r.lt);
       r.st_label = s.sales_volume < 20 ? 'Неликвид' : label(sts, r.st);
+      // Reasons, in the order of their weight in the score. [true, text] is a plus, [false, text] a minus.
+      const { scarcity, value, liq, peer } = r.f;
+      const status = { 'Не дропается': [true, 'больше не дропается'], 'Убран недавно': [true, 'недавно убран из дропа'], 'Armory': [false, 'ещё выдаётся в Armory'], 'Дропается': [false, 'всё ещё дропается'] }[s.status];
+      const rare = scarcity >= 0.75 ? [true, `копий меньше, чем у ${share(scarcity)}% ${RARITY_GEN[groupOf(s)]}`] : scarcity <= 0.25 ? [false, `копий больше, чем у ${share(1 - scarcity)}% ${RARITY_GEN[groupOf(s)]}`] : null;
+      const price = value >= 0.65 ? [true, 'дешевле ' + peer] : value <= 0.35 ? [false, 'дороже ' + peer] : null;
+      const sells = s.sales_volume < 20 ? [false, 'почти не продаётся'] : liq >= 0.7 ? [true, 'часто продаётся'] : liq <= 0.25 ? [false, 'редко продаётся'] : null;
+      const trend = r.t7 == null ? null : r.t7 >= 3 ? [true, `цена +${NF1.format(r.t7)}% за 7 дней`] : r.t7 <= -3 ? [false, `цена −${NF1.format(-r.t7)}% за 7 дней`] : null;
+      const reason = s.status === 'Убран недавно' || s.status === 'Дропается' ? status : null;
+      r.why_lt = [status, rare, price, sells].filter(Boolean).slice(0, 3);
+      r.why_st = [r.st_label === 'Неликвид' ? [false, 'меньше 20 продаж на CSFloat'] : sells, trend, reason, price].filter(Boolean).slice(0, 3);
+      delete r.f;
     }
     return out;
   }
@@ -462,6 +523,11 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
     return m[k];
   };
 
+  const why = (list, label) => {
+    if (list.length) return `<ul class="why">${list.map(([pro, text]) => `<li class="${pro ? 'pro' : 'con'}">${esc(text)}</li>`).join('')}</ul>`;
+    return label === 'Средний' || label === 'Слабый' ? '<ul class="why"><li class="neu">ничего не выделяется</li></ul>' : '';
+  };
+
   function drawRows(rows) {
     const keys = wearKeys();
     const WL = ['FN', 'MW', 'FT', 'WW', 'BS'];
@@ -472,19 +538,18 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
       const wears = keys.map((k, i) => `<td class="c-w${i >= 3 ? ' cw-x' : ''}${s[k] == null ? ' na' : ''}" data-l="${WL[i]}${S.st ? ' ST' : ''}">${s[k] == null ? '—' : usd(s[k])}</td>`).join('');
       const tcls = (v) => (v == null ? ' na' : v >= 3 ? ' up' : v <= -3 ? ' down' : '');
       return `<tr>
-        <td class="l c-name"><div class="skin"><i class="sw r-${RARITY[s.rarity] || 'special'}" title="${esc(s.rarity)}"></i><span class="nm"><b>${esc(s.name)}</b>${m.code ? `<i class="code ${m.code.toLowerCase()}" title="${m.code === 'SSP' ? '5% самых редких в своей группе' : 'Следующие 15% самых редких'}">${m.code}</i>` : ''}</span><small title="${esc(s.cases_all)}">${esc(caseLabel(s.case))}</small></div></td>
+        <td class="l c-name"><div class="skin"><i class="sw r-${RARITY[s.rarity] || 'special'}" title="${esc(RARITY_RU[s.rarity] || s.rarity)}"></i><span class="nm"><b>${esc(s.name)}</b>${m.code ? `<i class="code ${m.code.toLowerCase()}" title="${m.code === 'SSP' ? '5% скинов с самым малым supply в своей редкости' : 'Следующие 15% по малому supply в своей редкости'}">${m.code}</i>` : ''}</span><small title="${esc(s.cases_all)}">${esc(caseLabel(s.case))}</small></div></td>
         <td class="l c-st"><i class="stamp ${STATUS[s.status]}">${esc(s.status)}</i></td>
         <td data-l="Supply">${supply}</td>
         ${wears}
         <td class="c-t${tcls(m.t7)}" data-l="7 дней">${m.t7 == null ? '—' : pct(m.t7, true)}</td>
         <td class="c-30 c-t${tcls(m.t30)}" data-l="30 дней">${m.t30 == null ? '—' : pct(m.t30, true)}</td>
         <td data-l="Ликвидность">${m.liq == null ? '<span class="na">—</span>' : pct(m.liq)}</td>
-        <td class="c-cap" data-l="Капитализация">${m.cap == null ? '<span class="na">—</span>' : '$' + NFC.format(m.cap)}</td>
-        <td class="l c-sig" data-l="Долгосрок"><i class="sig ${SIG[m.lt_label]}"${m.lt != null ? ` title="Оценка ${m.lt} из 100"` : ''}>${m.lt_label}</i></td>
-        <td class="l c-sig" data-l="Краткосрок"><i class="sig ${SIG[m.st_label]}"${m.st != null ? ` title="Оценка ${m.st} из 100"` : ''}>${m.st_label}</i></td>
+        <td class="l c-sig" data-l="Долгосрок"><i class="sig ${SIG[m.lt_label]}"${m.lt != null ? ` title="Оценка ${m.lt} из 100"` : ''}>${m.lt_label}</i>${why(m.why_lt, m.lt_label)}</td>
+        <td class="l c-sig" data-l="Краткосрок"><i class="sig ${SIG[m.st_label]}"${m.st != null ? ` title="Оценка ${m.st} из 100"` : ''}>${m.st_label}</i>${why(m.why_st, m.st_label)}</td>
       </tr>`;
     });
-    $('#rows').innerHTML = html.length ? html.join('') : `<tr><td class="empty" colspan="14"><p>Ничего не нашлось${S.q ? ` по запросу «${esc(S.q)}»` : ''}. Проверьте написание: названия скинов на английском, как в игре. Или сбросьте фильтры.</p><button class="reset" type="button" data-reset>Сбросить фильтры</button></td></tr>`;
+    $('#rows').innerHTML = html.length ? html.join('') : `<tr><td class="empty" colspan="13"><p>Ничего не нашлось${S.q ? ` по запросу «${esc(S.q)}»` : ''}. Проверьте написание: названия скинов на английском, как в игре. Или сбросьте фильтры.</p><button class="reset" type="button" data-reset>Сбросить фильтры</button></td></tr>`;
   }
 
   function drawSources() {
@@ -595,15 +660,16 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
   window.addEventListener('resize', () => { if (window.innerWidth !== lastW && SKINS) { lastW = window.innerWidth; drawPlot(filtered(false)); } });
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => SKINS && drawPlot(filtered(false)));
 
-  $('#rows').innerHTML = Array.from({ length: 12 }, () => '<tr class="skel">' + '<td class="l"><span></span></td>'.repeat(2) + '<td><span></span></td>'.repeat(12) + '</tr>').join('');
+  $('#rows').innerHTML = Array.from({ length: 12 }, () => '<tr class="skel">' + '<td class="l"><span></span></td>'.repeat(2) + '<td><span></span></td>'.repeat(11) + '</tr>').join('');
   Promise.all(['skins', 'sources', 'trends'].map((n) => fetch(BASE + n + '.json').then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })))
     .then(([skins, sources, trends]) => {
       SKINS = skins; SOURCES = sources; M = compute(skins, trends);
       const sup = skins.filter((s) => s.supply > 0).map((s) => Math.log(s.supply));
       LOGMIN = Math.min(...sup); LOGMAX = Math.max(...sup);
+      $('#sup-n').textContent = NF.format(sup.length);
       render();
     })
-    .catch(() => { $('#rows').innerHTML = '<tr><td class="load-error" colspan="14">Не удалось загрузить данные справочника. Обновите страницу; если не поможет, проверьте соединение.</td></tr>'; });
+    .catch(() => { $('#rows').innerHTML = '<tr><td class="load-error" colspan="13">Не удалось загрузить данные справочника. Обновите страницу; если не поможет, проверьте соединение.</td></tr>'; });
 })();
 </script>
 </body>

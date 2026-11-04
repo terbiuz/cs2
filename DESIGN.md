@@ -138,11 +138,15 @@ components:
     textColor: "{colors.ground}"
     typography: "{typography.stamp}"
     padding: "3px 8px"
+  reason-list:
+    textColor: "{colors.ash}"
+    typography: "{typography.label}"
+    width: "13.5rem"
   table-row:
     backgroundColor: "{colors.panel}"
     textColor: "{colors.bone}"
     typography: "{typography.data}"
-    padding: "0 7px"
+    padding: "0 6px"
     height: "48px"
   table-row-hover:
     backgroundColor: "{colors.panel-raised}"
@@ -278,9 +282,10 @@ Four tiles acting as filter toggles (`aria-pressed`), each a big Oswald count ov
 - **Stamps:** outlined uppercase tags with a 6.8rem minimum width so a column of them aligns. "No longer drops" is lime-outlined; "recently removed" orange; Armory violet; "drops" Rule Strong with Ash text.
 - **Codes:** SSP is a Bone-filled tag with Ground text; SP is a Bone outline.
 - **Signals:** «Сильный» lime fill; «Средний» Bone text; «Слабый» and «Нет данных» Ash; «Неликвид» Ember Down text.
+- **Reasons:** under each long-term and short-term signal, up to three plain-language reasons in Onest 12px Ash, ordered by their weight in the score. Each line starts with a bold sign: lime «+» for a plus, Ember «−» for a minus. A middling label with nothing notable says «ничего не выделяется» without a sign. The reasons column is 13.5rem wide (12rem below 1760px) so the whole board fits at 1694px.
 
 ### Data Table
-Panel background, 48px rows divided by 1px Rule, Panel Raised on hover. Column heads are sort buttons in Oswald 500 uppercase Ash; the sorted column turns lime with a direction caret. Supply carries a 52×6px log-scale bar in lime on a Chart Grid track.
+Panel background, rows of at least 48px divided by 1px Rule (rows with reasons grow to about 86px), Panel Raised on hover. Column heads are sort buttons in Oswald 500 uppercase Ash; the sorted column turns lime with a direction caret. Supply carries a 44×6px log-scale bar in lime on a Chart Grid track. The name column is 19rem; long knife names wrap and the SSP or SP code follows the last word.
 
 ## Do's and Don'ts
 
