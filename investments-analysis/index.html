@@ -205,8 +205,16 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
 .world-brutal .bar { background: var(--grid); }
 .world-brutal .bar i { background: var(--lime); }
 .world-brutal .sig { font-style: normal; font-family: var(--f-display); font-weight: 600; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; }
-.world-brutal .sig.hi { background: var(--lime); color: var(--lime-ink); padding: 3px 8px; }
-.world-brutal .sig.lo, .world-brutal .sig.na { color: var(--muted); font-weight: 500; }
+.world-brutal .sig.na { color: var(--muted); font-weight: 500; }
+.world-brutal .grade { display: inline-flex; align-items: center; gap: 8px; }
+.world-brutal .tier { display: inline-block; min-width: 22px; padding: 0 4px; text-align: center; font-style: normal; font-family: var(--f-display); font-weight: 600; font-size: 13px; line-height: 20px; border: 1px solid transparent; }
+.world-brutal .tier.s { background: var(--lime); border-color: var(--lime); color: var(--lime-ink); }
+.world-brutal .tier.a { border-color: var(--lime); color: var(--lime); }
+.world-brutal .tier.b { border-color: var(--rule2); color: var(--ink); }
+.world-brutal .tier.c { border-color: var(--rule); color: var(--muted); }
+.world-brutal .grade .score { font-weight: 500; font-variant-numeric: tabular-nums; color: var(--ink); }
+.world-brutal .grade .tier.c + .score { color: var(--muted); }
+.world-brutal .legend .tier + .tier { margin-left: 3px; }
 .world-brutal .sig.sv { display: inline-block; line-height: 1.15; vertical-align: middle; }
 .world-brutal .sig.bad { color: var(--down); }
 .world-brutal .c-t.up, .world-brutal .c-t.down { font-weight: 600; }
@@ -272,8 +280,8 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
     <div class="wrap">
       <div class="presets" role="group" aria-label="Подборки">
         <button class="preset" aria-pressed="false" data-signal="" type="button"><b id="cnt-all">—</b><span>Все скины</span></button>
-        <button class="preset" aria-pressed="false" data-signal="lt" type="button"><b id="cnt-lt">—</b><span>Сильный долгосрок</span></button>
-        <button class="preset" aria-pressed="false" data-signal="st" type="button"><b id="cnt-st">—</b><span>Сильный краткосрок</span></button>
+        <button class="preset" aria-pressed="false" data-signal="lt" type="button"><b id="cnt-lt">—</b><span>Долгосрок S и A</span></button>
+        <button class="preset" aria-pressed="false" data-signal="st" type="button"><b id="cnt-st">—</b><span>Краткосрок S и A</span></button>
         <button class="preset" aria-pressed="false" data-signal="cheap" type="button"><b id="cnt-cheap">—</b><span>Дешевле похожих</span></button>
       </div>
     </div>
@@ -294,7 +302,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
         <option value="">Любая редкость</option><option value="Covert">Тайное</option><option value="Classified">Засекреченное</option><option value="Restricted">Запрещённое</option><option value="Mil-Spec">Армейское</option><option value="Industrial">Промышленное</option><option value="Consumer">Ширпотреб</option><option value="★ Rare Special">★ Ножи и перчатки</option>
       </select>
       <select id="sort-m" class="sort-m" aria-label="Сортировка">
-        <option value="lt:desc">Сначала сильный долгосрок</option><option value="st:desc">Сначала сильный краткосрок</option><option value="supply:asc">Меньше всего копий</option><option value="t7:desc">Сильнее всего выросли за 7 дней</option><option value="sales:desc">Больше всего продаж</option><option value="liq:desc">Самая высокая ликвидность</option><option value="min:asc">Сначала дешёвые</option><option value="min:desc">Сначала дорогие</option><option value="name:asc">По названию</option>
+        <option value="lt:desc">Сначала лучший долгосрок</option><option value="st:desc">Сначала лучший краткосрок</option><option value="supply:asc">Меньше всего копий</option><option value="t7:desc">Сильнее всего выросли за 7 дней</option><option value="sales:desc">Больше всего продаж</option><option value="liq:desc">Самая высокая ликвидность</option><option value="min:asc">Сначала дешёвые</option><option value="min:desc">Сначала дорогие</option><option value="name:asc">По названию</option>
       </select>
       <label class="toggle"><input id="f-st" type="checkbox"> Цены StatTrak™</label>
       <button class="chip" id="src-chip" type="button" hidden><span id="src-name"></span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.8"/></svg></button>
@@ -303,6 +311,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
     <p class="legend">
       <span><i class="code ssp">SSP</i>5% скинов с самым малым supply в своей редкости</span>
       <span><i class="code sp">SP</i>следующие 15%</span>
+      <span><i class="tier s">S</i><i class="tier a">A</i><i class="tier b">B</i><i class="tier c">C</i>тиры по оценке: лучшие 5%, следующие 15%, 30% и остальные</span>
       <span><i class="stamp fixed">Не дропается</i>новых копий почти нет</span>
       <span><i class="stamp removed">Убран недавно</i>кейс недавно ушёл из дропа</span>
       <span><i class="stamp armory">Armory</i>выдаётся за звёзды Armory Pass</span>
@@ -338,10 +347,10 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
       <div>
         <h2>Кейсы и коллекции</h2>
         <p class="lead">Откуда берутся скины и дропается ли источник сейчас. Для долгосрока это главное: когда кейс перестаёт дропаться, новых копий его скинов больше не появляется. Нажмите на строку, чтобы оставить в справочнике только скины этого кейса или коллекции.</p>
-        <p class="lead">Supply здесь показывает, сколько всего копий у обычных скинов источника, без ножей и перчаток. Чем больше, тем чаще его открывали.</p>
+        <p class="lead">Supply здесь показывает, сколько всего копий у обычных скинов источника, без ножей и перчаток. Чем больше, тем чаще его открывали. Цена кейса тоже важна для долгосрока: дешёвый кейс продолжают массово открывать, даже когда он больше не дропается, и копий его скинов становится больше.</p>
         <div class="src-box">
           <table class="src">
-            <thead><tr><th class="l">Источник</th><th class="l">Статус</th><th>Скинов</th><th title="Сколько ножей и перчаток выпадает из этого источника">Ножи и перч.</th><th>Supply</th></tr></thead>
+            <thead><tr><th class="l">Источник</th><th class="l">Статус</th><th>Скинов</th><th title="Сколько ножей и перчаток выпадает из этого источника">Ножи и перч.</th><th>Supply</th><th title="Средняя цена продажи кейса на Skinport за 30 дней">Цена</th></tr></thead>
             <tbody id="src-rows"></tbody>
           </table>
         </div>
@@ -350,23 +359,25 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
         <h2>Как считаем</h2>
         <div class="method">
           <div><h3>Supply</h3><p>Сколько копий скина существует. Копией считается один предмет в чьём-то инвентаре: каждый раз, когда скин выпадает из кейса или получается контрактом, копий становится на одну больше. Число берём из CSFloat FloatDB, по всем wear вместе со StatTrak и сувенирами. Настоящее число больше, но для сравнения скинов между собой этого хватает. Знак «~» значит, что CSFloat округлил до тысяч.</p></div>
-          <div><h3>Похожие скины</h3><p>Supply сравниваем внутри одной редкости: тайное с тайным, армейское с армейским, ножи с ножами. Шансы выпадения у редкостей разные: армейское выпадает примерно в 80% открытий, тайное в 0,64%. Цену сравниваем со скинами той же редкости и того же типа оружия (винтовки с винтовками, ножи одной модели), а каждый wear с тем же wear. «Дешевле похожих» значит, что по цене скин стоит среди них ниже, чем по редкости.</p></div>
-          <div><h3>Долгосрок</h3><p>Держать месяцы и годы. Признаки в порядке важности:</p>
+          <div><h3>Похожие скины</h3><p>Та же редкость и тот же тип оружия: тайные винтовки сравниваем с тайными винтовками, ножи и перчатки с той же моделью. Если похожих меньше 8, берём всю редкость. Редкость важна, потому что армейское выпадает примерно в 80% открытий, а тайное в 0,64%. Тип оружия важен из-за спроса: при том же числе копий AK-47 хотят больше игроков, чем Negev. С похожими сравниваем supply и цену, цену по каждому wear отдельно. «Дешевле похожих» значит, что скин дешевле хотя бы 80% похожих.</p></div>
+          <div><h3>Новые копии</h3><p>Сколько копий ещё может появиться. Кейс, который больше не дропается, всё равно покупают на рынке и открывают, и чем он дороже, тем реже это делают. У ножей и перчаток есть ещё контракты: 5 тайных скинов кейса меняются на его нож или перчатки. Считаем, на сколько процентов выросло бы число ножей, если бы все тайные скины их кейсов ушли в контракты. У скинов из коллекций кейса нет. Пока коллекция выпадает, копии прибавляются каждую неделю, и баллов нет. Когда перестаёт, новые копии появляются только через контракты из более простых скинов коллекции. Их мы посчитать не можем, поэтому ставим середину: 12,5 из 25. Такие же контракты для скинов из кейсов тоже не учитываем.</p></div>
+          <div><h3>Долгосрок</h3><p>Держать месяцы и годы. Баллы:</p>
             <ul class="checks">
-              <li>больше не дропается: новых копий нет, а старые уходят из игры;</li>
-              <li>копий мало для своей редкости;</li>
-              <li>дешевле похожих скинов;</li>
-              <li>много продаж, значит, потом получится продать.</li>
-            </ul></div>
-          <div><h3>Краткосрок</h3><p>Держать дни и недели. Признаки в порядке важности:</p>
+              <li>статус, до 35: не дропается 35, убран недавно 30, Armory 10, дропается 0;</li>
+              <li>копий меньше, чем у похожих, до 25;</li>
+              <li>новых копий появится мало, до 25;</li>
+              <li>дешевле похожих, до 15.</li>
+            </ul>
+            <p>Скин, который ещё дропается или продан меньше 20 раз, не поднимается выше B.</p></div>
+          <div><h3>Краткосрок</h3><p>Держать дни и недели. Баллы:</p>
             <ul class="checks">
-              <li>много продаж: быстро купить и быстро продать;</li>
-              <li>цена растёт последние 7 дней;</li>
-              <li>есть повод для роста: скин недавно убрали из дропа;</li>
-              <li>дешевле похожих скинов.</li>
+              <li>много продаж, до 35: быстро купить и быстро продать;</li>
+              <li>цена выросла за 7 дней, до 25, без тренда 10;</li>
+              <li>повод для роста, до 20: убран недавно 20, Armory 10, не дропается 8, дропается 0;</li>
+              <li>дешевле похожих, до 20.</li>
             </ul>
             <p>Рост должен перекрыть комиссию: Steam берёт 15%, CSFloat около 2%.</p></div>
-          <div><h3>Метки</h3><p>«Сильный» получают лучшие 15% скинов по сумме признаков, «Средний» следующие 35%, «Слабый» все остальные. «Неликвид» ставим, если на CSFloat меньше 20 продаж. «Только сувенир» значит, что обычной версии скина нет, а цены сувенирных сайт не собирает, поэтому оценки нет. В колонке «Плюсы и минусы» написано, что выделяется у скина по supply, цене, продажам и тренду. Это правило сортировки, а не совет, что покупать.</p></div>
+          <div><h3>Оценка и тиры</h3><p>Баллы за признак зависят от места скина среди других. Если копий меньше, чем у 80% похожих, это 80% от 25, то есть 20 баллов. Баллы складываются, и оценка показывает место по этой сумме: 92 значит, что сумма больше, чем у 92% скинов. Тиры: S лучшие 5%, A следующие 15%, B следующие 30%, C остальные. «Неликвид» в краткосроке значит меньше 20 продаж. «Только сувенир»: обычной версии нет, а цены сувенирных сайт не собирает. В колонке «Плюсы и минусы» написано, что выделяется у скина. Это правило сортировки, а не совет, что покупать.</p></div>
           <div><h3>Статус и ликвидность</h3><p>«Дропается»: кейс или коллекция выпадает в недельном дропе. «Armory»: выдаётся за звёзды Armory Pass. «Убран недавно»: вышел из дропа или Armory в 2025–2026 годах. «Не дропается»: давно не выпадает. Valve официальный список не публикует, статус взят из комьюнити-трекинга. Колонка «Продаж» показывает, сколько раз скин продали на CSFloat: по этому числу судим, легко ли его продать. «Много продаж» значит больше, чем у 70% скинов, «мало» значит меньше, чем у 75%. Ликвидность показывает долю: продажи, делённые на supply.</p></div>
         </div>
       </div>
@@ -375,7 +386,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
 </main>
 
 <footer class="foot wrap">
-  <p>Данные: <a href="https://csfloat.com/db" rel="noopener">CSFloat</a> (цены по wear, продажи, supply из FloatDB) и <a href="https://skinport.com" rel="noopener">Skinport</a> (тренд цен за 7, 30 и 90 дней), снимок 3 ноября 2026. Статус кейсов по комьюнити-трекингу (bo5.gg, tradeit.gg, csprofit.gg).</p>
+  <p>Данные: <a href="https://csfloat.com/db" rel="noopener">CSFloat</a> (цены по wear, продажи, supply из FloatDB) и <a href="https://skinport.com" rel="noopener">Skinport</a> (тренд цен за 7, 30 и 90 дней, цены кейсов), снимок 3 ноября 2026. Статус кейсов по комьюнити-трекингу (bo5.gg, tradeit.gg, csprofit.gg).</p>
   <p>Supply собран для <span id="sup-n">—</span> из 2 126 скинов.</p>
   <p>Это не финансовый совет. Цены скинов могут резко меняться из-за обновлений Valve и настроения рынка. Сайт не связан с Valve, CSFloat или Skinport.</p>
   <p><a href="../">Все проекты CS2 от terbiuz</a></p>
@@ -399,17 +410,20 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
   const STATUS_ORDER = { 'Дропается': 0, 'Armory': 1, 'Убран недавно': 2, 'Не дропается': 3 };
   const RARITY = { 'Consumer': 'consumer', 'Industrial': 'industrial', 'Mil-Spec': 'milspec', 'Restricted': 'restricted', 'Classified': 'classified', 'Covert': 'covert', 'Contraband': 'contraband', '★ Rare Special': 'special' };
   const RARITY_RU = { 'Consumer': 'Ширпотреб', 'Industrial': 'Промышленное', 'Mil-Spec': 'Армейское', 'Restricted': 'Запрещённое', 'Classified': 'Засекреченное', 'Covert': 'Тайное', 'Contraband': 'Контрабанда', '★ Rare Special': '★ Нож или перчатки' };
-  const SIG = { 'Сильный': 'hi', 'Средний': 'mid', 'Слабый': 'lo', 'Неликвид': 'bad', 'Нет данных': 'na', 'Только сувенир': 'na sv' };
+  const SIG = { 'Неликвид': 'bad', 'Нет данных': 'na', 'Только сувенир': 'na sv' };
+  const TIER = { S: 's', A: 'a', B: 'b', C: 'c' };
+  const TOP = new Set(['S', 'A']);
   const DEFAULTS = { q: '', cat: '', kind: '', status: '', rarity: '', signal: '', st: false, sort: 'lt', dir: 'desc', src: '' };
   const S = { ...DEFAULTS };
   let SKINS = null, SOURCES = null, M = new Map(), LOGMIN = 0, LOGMAX = 1;
 
-  // Metrics: liquidity, short-print code, value against similar skins, long/short-term scores, labels and the reasons behind them.
-  // Supply is compared within one rarity (drop odds differ by rarity). Price is compared among similar skins:
-  // same rarity and weapon type (knives and gloves: same model), wear against the same wear.
+  // Metrics: liquidity, short-print code, long/short-term scores, tiers and the reasons behind them.
+  // Similar skins: same rarity and weapon type (knives and gloves: same model), the whole rarity when fewer than 8.
+  // Supply and price are compared among similar skins, price wear against the same wear.
+  // Each factor gives its share of points by rank (0..1), the points are summed, and the score is the rank of that sum.
   const RARITY_GEN = { 'Consumer': 'ширпотреба', 'Industrial': 'промышленных', 'Mil-Spec': 'армейских', 'Restricted': 'запрещённых', 'Classified': 'засекреченных', 'Covert': 'тайных', 'Нож': 'ножей', 'Перчатки': 'перчаток' };
   const CAT_GEN = { 'Винтовка': 'винтовок', 'Снайперка': 'снайперок', 'Пистолет': 'пистолетов', 'ПП': 'ПП', 'Тяжёлое': 'дробовиков и пулемётов' };
-  function compute(skins, trends) {
+  function compute(skins, trends, sources) {
     const tr = new Map(trends.map((t) => [t.id, t]));
     const change = (a, b) => (a > 0 && b > 0 ? Math.round((a / b - 1) * 1000) / 10 : null);
     const special = (s) => s.category === 'Нож' || s.category === 'Перчатки';
@@ -433,45 +447,79 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
     const vols = ok.map((s) => s.sales_volume).sort((x, y) => x - y);
     const trendOf = (id) => { const t = tr.get(id); if (!t || t.vol90 < 10) return { t7: null, t30: null }; return { t7: t.vol7 >= 3 ? change(t.med7, t.med90) : null, t30: t.vol30 >= 5 ? change(t.med30, t.med90) : null }; };
     const t7s = ok.map((s) => trendOf(s.id).t7).filter((v) => v != null).sort((x, y) => x - y);
+    // New copies, 1 = few. Case skins: the dearer the case, the fewer people open it (cheapest case if several).
+    // Knives and gloves: also how much their number could grow if every Covert of their cases went into trade-ups (5 Coverts give 1).
+    // Collection skins have no case to open. While the collection drops, copies arrive every week (0). Once it stops,
+    // new copies come only from trade-ups, which we cannot count, so it sits in the middle (0.5).
+    const casePrice = new Map(sources.filter((c) => c.price > 0).map((c) => [c.case, c.price]));
+    const prices = sortAll([...casePrice.values()]);
+    const cov = new Map(), spc = new Map();
+    for (const s of ok) {
+      const cs = s.cases_all.split(' · '), into = s.rarity === 'Covert' ? cov : special(s) ? spc : null;
+      if (into) cs.forEach((c) => into.set(c, (into.get(c) || 0) + s.supply / cs.length));
+    }
+    const total = (m, cs) => cs.reduce((a, c) => a + (m.get(c) || 0), 0);
+    const tradeOf = (s) => { const cs = s.cases_all.split(' · '), k = total(spc, cs); return k ? total(cov, cs) / 5 / k : null; };
+    const trades = sortAll(ok.filter(special).map(tradeOf).filter((v) => v != null));
+    const newCopies = (s) => {
+      if (s.kind !== 'Кейс') return { v: s.status === 'Не дропается' || s.status === 'Убран недавно' ? 0.5 : 0 };
+      const ps = s.cases_all.split(' · ').map((c) => casePrice.get(c)).filter((v) => v > 0);
+      const price = ps.length ? Math.min(...ps) : null, byCase = price == null ? 0.5 : rankIn(prices, price);
+      if (!special(s)) return { v: byCase, price };
+      const trade = tradeOf(s);
+      return { v: (byCase + (trade == null ? 0.5 : 1 - rankIn(trades, trade))) / 2, price, trade };
+    };
     const out = new Map();
     for (const s of skins) {
       const t = trendOf(s.id);
-      const r = { t7: t.t7, t30: t.t30, liq: null, cheap: false, code: '', lt: null, st: null, lt_label: 'Нет данных', st_label: 'Нет данных', why: [] };
+      const r = { t7: t.t7, t30: t.t30, liq: null, cheap: false, code: '', lt: null, st: null, ltRaw: null, stRaw: null, lt_label: 'Нет данных', st_label: 'Нет данных', why: [] };
       if (s.supply > 0 && s.min_price > 0) {
         const scarcity = 1 - rankIn(sup[groupOf(s)], s.supply);
         const k = peerKey(s), p = peers[k];
-        const value = (1 - rankIn(p.sup, s.supply) - priceRank(s, p) + 1) / 2;
-        const turnover = s.sales_volume / s.supply;
+        const rare = 1 - rankIn(p.sup, s.supply);
+        const value = 1 - priceRank(s, p);
+        const nc = newCopies(s);
         const liq = rankIn(vols, s.sales_volume);
         const momentum = t.t7 == null ? 0.4 : rankIn(t7s, t.t7);
-        r.liq = Math.round(turnover * 10000) / 100;
-        r.cheap = value >= 0.65;
+        r.liq = Math.round((s.sales_volume / s.supply) * 10000) / 100;
+        r.cheap = value >= 0.8;
         r.code = scarcity >= 0.95 ? 'SSP' : scarcity >= 0.8 ? 'SP' : '';
-        r.lt = Math.round(35 * statusLT[s.status] + 25 * scarcity + 20 * value + 20 * liq);
-        r.st = Math.round(35 * liq + 25 * momentum + 20 * catalyst[s.status] + 20 * value);
-        r.f = { scarcity, value, liq, peer: peerName(s, k) };
+        r.ltRaw = 35 * statusLT[s.status] + 25 * rare + 25 * nc.v + 15 * value;
+        r.stRaw = 35 * liq + 25 * momentum + 20 * catalyst[s.status] + 20 * value;
+        r.f = { rare, value, liq, nc, peer: peerName(s, k) };
       }
       // No regular version on the market, only Souvenir, and Souvenir prices are not collected.
       if (s.souvenir && !(s.min_price > 0)) { r.lt_label = r.st_label = 'Только сувенир'; r.note = 'есть только сувенирная версия, а её цены сайт не собирает'; }
       out.set(s.id, r);
     }
-    const lts = [...out.values()].filter((r) => r.lt != null).map((r) => r.lt).sort((x, y) => x - y);
-    const sts = [...out.values()].filter((r) => r.st != null).map((r) => r.st).sort((x, y) => x - y);
-    const label = (sorted, v) => { const p = rankIn(sorted, v); return p >= 0.85 ? 'Сильный' : p >= 0.5 ? 'Средний' : 'Слабый'; };
+    const lts = sortAll([...out.values()].filter((r) => r.ltRaw != null).map((r) => r.ltRaw));
+    const sts = sortAll([...out.values()].filter((r) => r.stRaw != null).map((r) => r.stRaw));
+    const tierOf = (p) => (p >= 0.95 ? 'S' : p >= 0.8 ? 'A' : p >= 0.5 ? 'B' : 'C');
     const share = (v) => Math.max(1, Math.min(99, Math.round(v * 100)));
     for (const s of skins) {
       const r = out.get(s.id);
-      if (r.lt == null) continue;
-      r.lt_label = label(lts, r.lt);
-      r.st_label = s.sales_volume < 20 ? 'Неликвид' : label(sts, r.st);
-      // Pluses and minuses, each factor once, in a fixed order: supply, price, sales, trend. Status has its own column.
-      const { scarcity, value, liq, peer } = r.f;
+      if (r.ltRaw == null) continue;
+      const pl = rankIn(lts, r.ltRaw), ps = rankIn(sts, r.stRaw);
+      r.lt = Math.floor(pl * 100); r.st = Math.floor(ps * 100);
+      // Long term: a skin that still drops or barely sells never goes above B.
+      const stop = s.status === 'Дропается' ? 'ещё дропается' : s.sales_volume < 20 ? 'почти нет продаж' : '';
+      const capped = stop && TOP.has(tierOf(pl));
+      r.lt_label = capped ? 'B' : tierOf(pl);
+      r.st_label = s.sales_volume < 20 ? 'Неликвид' : tierOf(ps);
+      // Pluses and minuses, each factor once, in a fixed order: supply, new copies, price, sales, trend. Status has its own column.
+      const { rare, value, liq, nc, peer } = r.f;
       const sold = NF.format(s.sales_volume);
-      const rare = scarcity >= 0.75 ? [true, `копий меньше, чем у ${share(scarcity)}% ${RARITY_GEN[groupOf(s)]}`] : scarcity <= 0.25 ? [false, `копий больше, чем у ${share(1 - scarcity)}% ${RARITY_GEN[groupOf(s)]}`] : null;
-      const price = value >= 0.65 ? [true, 'дешевле ' + peer] : value <= 0.35 ? [false, 'дороже ' + peer] : null;
+      const many = s.category === 'Перчатки' ? 'перчаток' : 'ножей';
+      const traded = nc.trade == null ? '' : `, из тайных ещё +${NF.format(Math.round(nc.trade * 100))}%`;
+      const supplyWhy = rare >= 0.75 ? [true, `копий меньше, чем у ${share(rare)}% ${peer}`] : rare <= 0.25 ? [false, `копий больше, чем у ${share(1 - rare)}% ${peer}`] : null;
+      const copiesWhy = nc.price == null ? null
+        : special(s) ? (nc.v >= 0.75 ? [true, `${many} прибавится мало: кейс ${usd(nc.price)}${traded}`] : nc.v <= 0.25 ? [false, `${many} прибавится много: кейс ${usd(nc.price)}${traded}`] : null)
+        : nc.v >= 0.75 ? [true, `кейс дорогой, ${usd(nc.price)}: его редко открывают`] : nc.v <= 0.25 ? [false, `кейс дешёвый, ${usd(nc.price)}: его открывают массово`] : null;
+      const price = value >= 0.8 ? [true, 'дешевле ' + peer] : value <= 0.2 ? [false, 'дороже ' + peer] : null;
       const sells = s.sales_volume < 20 ? [false, `почти нет продаж: ${sold}`] : liq >= 0.7 ? [true, `много продаж: ${sold}`] : liq <= 0.25 ? [false, `мало продаж: ${sold}`] : null;
       const trend = r.t7 == null ? null : r.t7 >= 3 ? [true, `цена +${NF1.format(r.t7)}% за 7 дней`] : r.t7 <= -3 ? [false, `цена −${NF1.format(-r.t7)}% за 7 дней`] : null;
-      r.why = [rare, price, sells, trend].filter(Boolean);
+      const cap = capped ? [false, `${stop}: в долгосроке выше B не ставим`] : null;
+      r.why = [supplyWhy, copiesWhy, price, sells, trend, cap].filter(Boolean);
       delete r.f;
     }
     return out;
@@ -481,8 +529,8 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
     const q = S.q.trim().toLowerCase();
     return SKINS.filter((s) => {
       const m = M.get(s.id);
-      if (!ignoreSignal && S.signal === 'lt' && m.lt_label !== 'Сильный') return false;
-      if (!ignoreSignal && S.signal === 'st' && m.st_label !== 'Сильный') return false;
+      if (!ignoreSignal && S.signal === 'lt' && !TOP.has(m.lt_label)) return false;
+      if (!ignoreSignal && S.signal === 'st' && !TOP.has(m.st_label)) return false;
       if (!ignoreSignal && S.signal === 'cheap' && !m.cheap) return false;
       if (S.cat && s.category !== S.cat) return false;
       if (S.kind && s.kind !== S.kind) return false;
@@ -502,12 +550,17 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
     if (k === 'supply') return s.supply;
     if (k === 'sales') return s.sales_volume;
     if (k === 'min') return s.min_price;
+    if (k === 'lt' || k === 'st') return m[k + 'Raw'];
     if (k[0] === 'w' && k.length === 2) return s[wearKeys()[+k[1]]];
     return m[k];
   };
 
-  // The souvenir label breaks onto two lines so it stays no wider than the other labels.
-  const sig = (label, score) => `<i class="sig ${SIG[label]}"${score != null ? ` title="Оценка ${score} из 100"` : ''}>${label === 'Только сувенир' ? 'Только<br>сувенир' : label}</i>`;
+  // A tier letter with the score next to it; other labels as text. The souvenir label breaks onto two lines so it stays no wider than the others.
+  const sig = (label, score) => {
+    const tip = score == null ? '' : ` title="${score >= 100 ? 'Лучшая оценка' : `Лучше, чем у ${score}% скинов`}"`;
+    if (TIER[label]) return `<span class="grade"${tip}><i class="tier ${TIER[label]}">${label}</i><b class="score">${score}</b></span>`;
+    return `<i class="sig ${SIG[label]}"${tip}>${label === 'Только сувенир' ? 'Только<br>сувенир' : label}</i>`;
+  };
   const why = (m) => {
     if (m.lt == null) return m.note ? `<ul class="why"><li class="neu">${esc(m.note)}</li></ul>` : '<span class="na">—</span>';
     if (!m.why.length) return '<ul class="why"><li class="neu">ничего не выделяется</li></ul>';
@@ -551,15 +604,16 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
       <td class="l">${esc(c.case)}<small>${c.kind === 'Кейс' ? 'кейс' : 'коллекция'}</small></td>
       <td class="l"><i class="stamp ${STATUS[c.status]}">${esc(c.status)}</i></td>
       <td>${NF.format(c.skins)}</td><td>${c.specials ? NF.format(c.specials) : '<span class="na">—</span>'}</td>
-      <td>${own.has(c.case) ? NF.format(own.get(c.case)) : '<span class="na">—</span>'}</td></tr>`).join('');
+      <td>${own.has(c.case) ? NF.format(own.get(c.case)) : '<span class="na">—</span>'}</td>
+      <td>${c.price > 0 ? usd(c.price) : '<span class="na">—</span>'}</td></tr>`).join('');
   }
 
   function render() {
     if (!SKINS) return;
     const base = filtered(true);
     $('#cnt-all').textContent = NF.format(base.length);
-    $('#cnt-lt').textContent = NF.format(base.filter((s) => M.get(s.id).lt_label === 'Сильный').length);
-    $('#cnt-st').textContent = NF.format(base.filter((s) => M.get(s.id).st_label === 'Сильный').length);
+    $('#cnt-lt').textContent = NF.format(base.filter((s) => TOP.has(M.get(s.id).lt_label)).length);
+    $('#cnt-st').textContent = NF.format(base.filter((s) => TOP.has(M.get(s.id).st_label)).length);
     $('#cnt-cheap').textContent = NF.format(base.filter((s) => M.get(s.id).cheap).length);
     const rows = filtered(false);
     const sign = S.dir === 'asc' ? 1 : -1;
@@ -608,7 +662,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
   $('#rows').innerHTML = Array.from({ length: 12 }, () => '<tr class="skel">' + '<td class="l"><span></span></td>'.repeat(2) + '<td><span></span></td>'.repeat(13) + '</tr>').join('');
   Promise.all(['skins', 'sources', 'trends'].map((n) => fetch(BASE + n + '.json').then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })))
     .then(([skins, sources, trends]) => {
-      SKINS = skins; SOURCES = sources; M = compute(skins, trends);
+      SKINS = skins; SOURCES = sources; M = compute(skins, trends, sources);
       const sup = skins.filter((s) => s.supply > 0).map((s) => Math.log(s.supply));
       LOGMIN = Math.min(...sup); LOGMAX = Math.max(...sup);
       $('#sup-n').textContent = NF.format(sup.length);

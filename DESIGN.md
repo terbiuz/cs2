@@ -132,11 +132,11 @@ components:
     textColor: "{colors.bone}"
     typography: "{typography.stamp}"
     padding: "0 5px"
-  signal-strong:
+  tier-s:
     backgroundColor: "{colors.acid-lime}"
     textColor: "{colors.ground}"
     typography: "{typography.stamp}"
-    padding: "3px 8px"
+    padding: "0 4px"
   reason-list:
     textColor: "{colors.ash}"
     typography: "{typography.label}"
@@ -175,7 +175,7 @@ Rejected by the user: kitschy gamer aesthetics, a "boring like Excel" grid, the 
 A near-monochrome dark board with one acid accent and three single-meaning status hues.
 
 ### Primary
-- **Acid Lime** (acid-lime): the only signal colour. Fills the active preset tile, «Сильный» signal labels, the primary hub action, the source-filter chip and text selection. Outlines the search field and the "no longer drops" stamp. Marks the sorted column head, the brand word and focus rings. Text on lime is always Ground.
+- **Acid Lime** (acid-lime): the only signal colour. Fills the active preset tile, the S tier box, the primary hub action, the source-filter chip and text selection. Outlines the search field and the "no longer drops" stamp. Marks the sorted column head, the brand word and focus rings. Text on lime is always Ground.
 
 ### Secondary
 - **Ember Down** (ember-down): falling price trends and the «Неликвид» label. Text only, never a fill.
@@ -195,7 +195,7 @@ A near-monochrome dark board with one acid accent and three single-meaning statu
 - **Chart Grid** (chart-grid): supply bar tracks.
 
 ### Named Rules
-**The One Signal Rule.** Lime marks only what matters now. A table row carries at most one or two lime fills (the «Сильный» labels); stamps and codes in a row are outlines or bone, never lime fills.
+**The One Signal Rule.** Lime marks only what matters now. A table row carries at most one or two lime fills (the S tier boxes); stamps and codes in a row are outlines or bone, never lime fills.
 
 **The One Meaning Rule.** Orange, violet and red each mean exactly one thing (recently removed, Armory, falling or illiquid). Do not reuse them as decoration or for unrelated states.
 
@@ -275,16 +275,16 @@ Four tiles acting as filter toggles (`aria-pressed`), each a big Oswald count ov
 ### Status Stamps and Rarity Codes
 - **Stamps:** outlined uppercase tags with a 6.8rem minimum width so a column of them aligns. "No longer drops" is lime-outlined; "recently removed" orange; Armory violet; "drops" Rule Strong with Ash text.
 - **Codes:** SSP is a Bone-filled tag with Ground text; SP is a Bone outline.
-- **Signals:** «Сильный» lime fill; «Средний» Bone text; «Слабый», «Нет данных» and «Только сувенир» Ash; «Неликвид» Ember Down text. «Только сувенир» breaks onto two lines so the label column keeps its width.
-- **Pluses and minuses:** one «Плюсы и минусы» column after the two signals. Each factor appears at most once, in a fixed order: supply against the same rarity, price against similar skins, number of sales, 7-day trend. Status is never repeated there because it has its own column. Onest 12px Ash; each line starts with a bold sign, lime «+» or Ember «−». A skin with nothing notable reads «ничего не выделяется» without a sign. The column is 13rem wide (11rem below 1760px).
+- **Tiers:** each score cell is a 22px tier box plus the score (0–100, the skin's rank) in tabular figures. S is a lime fill with Ground text; A a lime outline with lime text; B a Rule Strong outline with Bone text; C a Rule outline with Ash text and an Ash score. Other labels are text: «Нет данных» and «Только сувенир» Ash, «Неликвид» Ember Down. «Только сувенир» breaks onto two lines so the label column keeps its width. The legend repeats the four boxes.
+- **Pluses and minuses:** one «Плюсы и минусы» column after the two signals. Each factor appears at most once, in a fixed order: supply against similar skins, new copies (case price; for knives and gloves also Covert trade-ups), price against similar skins, number of sales, 7-day trend, and a closing minus when a long-term tier was capped at B. Status is never repeated there because it has its own column. Onest 12px Ash; each line starts with a bold sign, lime «+» or Ember «−». A skin with nothing notable reads «ничего не выделяется» without a sign. The column is 13rem wide (11rem below 1760px).
 
 ### Data Table
-Panel background, rows of at least 48px divided by 1px Rule (two or three reasons grow a row to 62–93px), Panel Raised on hover. Column heads are sort buttons in Oswald 500 uppercase Ash; the sorted column turns lime with a direction caret. Supply carries a 44×6px log-scale bar in lime on a Chart Grid track. «Продаж» (count of CSFloat sales) and «Ликвидность» (sales as a share of supply) sit side by side. The name column is 18rem (17.5rem below 1760px); long knife names wrap and the SSP or SP code follows the last word. At 1694px and wider every column fits without sideways scrolling.
+Panel background, rows of at least 48px divided by 1px Rule (two to five reasons grow a row to 62–109px), Panel Raised on hover. Column heads are sort buttons in Oswald 500 uppercase Ash; the sorted column turns lime with a direction caret. Supply carries a 44×6px log-scale bar in lime on a Chart Grid track. «Продаж» (count of CSFloat sales) and «Ликвидность» (sales as a share of supply) sit side by side. The name column is 18rem (17.5rem below 1760px); long knife names wrap and the SSP or SP code follows the last word. At 1694px and wider every column fits without sideways scrolling.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep lime to the active preset, «Сильный» labels, the primary action, the search border, focus and selection.
+- **Do** keep lime to the active preset, S and A tier boxes, the primary action, the search border, focus and selection.
 - **Do** set titles, section heads and big counts in Oswald 700 uppercase, and data in Onest with tabular figures.
 - **Do** keep every table column available: pin the name and scroll sideways on narrow desktops, use labelled cards on phones.
 - **Do** state missing data in the cell («нет данных», «—») rather than hiding the row or column.
