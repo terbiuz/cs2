@@ -14,7 +14,6 @@ colors:
   ember-down: "#FF6A45"
   removed-orange: "#FF9F1C"
   armory-violet: "#A58BFF"
-  drop-grey: "#6B6B66"
   rarity-consumer: "#B0C3D9"
   rarity-industrial: "#5E98D9"
   rarity-milspec: "#4B69FF"
@@ -150,10 +149,6 @@ components:
     height: "48px"
   table-row-hover:
     backgroundColor: "{colors.panel-raised}"
-  tooltip:
-    backgroundColor: "{colors.acid-lime}"
-    textColor: "{colors.ground}"
-    padding: "8px 10px"
 ---
 
 # Design System: terbiuz CS2
@@ -180,13 +175,12 @@ Rejected by the user: kitschy gamer aesthetics, a "boring like Excel" grid, the 
 A near-monochrome dark board with one acid accent and three single-meaning status hues.
 
 ### Primary
-- **Acid Lime** (acid-lime): the only signal colour. Fills the active preset tile, «Сильный» signal labels, the primary hub action, the source-filter chip, tooltips and text selection. Outlines the search field and the "no longer drops" stamp. Marks the sorted column head, the brand word and focus rings. Text on lime is always Ground.
+- **Acid Lime** (acid-lime): the only signal colour. Fills the active preset tile, «Сильный» signal labels, the primary hub action, the source-filter chip and text selection. Outlines the search field and the "no longer drops" stamp. Marks the sorted column head, the brand word and focus rings. Text on lime is always Ground.
 
 ### Secondary
 - **Ember Down** (ember-down): falling price trends and the «Неликвид» label. Text only, never a fill.
-- **Removed Orange** (removed-orange): the "recently removed" stamp outline and its chart points.
-- **Armory Violet** (armory-violet): the Armory stamp outline and its chart points.
-- **Drop Grey** (drop-grey): still-dropping items on the chart; the drop stamp itself uses Rule Strong and Ash.
+- **Removed Orange** (removed-orange): the "recently removed" stamp outline.
+- **Armory Violet** (armory-violet): the Armory stamp outline.
 
 ### Tertiary
 - **CS2 rarity set** (rarity-consumer through rarity-special): the game's own rarity colours, shown only as 10px square swatches beside a skin name.
@@ -198,7 +192,7 @@ A near-monochrome dark board with one acid accent and three single-meaning statu
 - **Bone** (bone): primary text, SSP code fill, outline-button border.
 - **Ash** (ash): secondary text, column heads, captions, inactive stamps.
 - **Rule** (rule): hairline dividers and panel borders. **Rule Strong** (rule-strong): select borders, header underline, drop stamp border, scrollbar thumb.
-- **Chart Grid** (chart-grid): plot gridlines and supply bar tracks.
+- **Chart Grid** (chart-grid): supply bar tracks.
 
 ### Named Rules
 **The One Signal Rule.** Lime marks only what matters now. A table row carries at most one or two lime fills (the «Сильный» labels); stamps and codes in a row are outlines or bone, never lime fills.
@@ -235,7 +229,7 @@ The first viewport stacks: nav row (48px), title with the snapshot line beside a
 
 The skins table keeps all 14 columns. When the window is narrower than the table, it scrolls horizontally inside its panel with the skin-name column pinned. At 760px and below, rows become cards: the name and status span the full width, values sit in a three-column grid with their labels above, and empty wear prices are dropped. Presets reflow to a 2×2 grid; selects pair up two per row. At 1100px and below, the masthead and the cases/method split stack to one column. The cases table never hides a column; on phones it scrolls sideways with the source name held at a 10.5rem minimum.
 
-The supply-vs-price plot height follows its width (36% of width, clamped 360–620px; 300px on phones) so the diagonal keeps its slope.
+There is no supply-versus-price chart: it mixed every rarity and weapon type on one log-log field and repeated what the «дешевле похожих» reason already says, so the board leads straight from the table to the case table and the method.
 
 ## Elevation & Depth
 
@@ -246,7 +240,7 @@ Flat. Depth comes only from tonal steps (Ground → Panel → Panel Raised) and 
 
 ## Shapes
 
-Square corners everywhere (0px radius): tiles, fields, buttons, stamps, tooltips. Borders are 1px; the search field alone takes a 2px lime border, marking it as the page's main entry point. Chart points are the only circles.
+Square corners everywhere (0px radius): tiles, fields, buttons, stamps. Borders are 1px; the search field alone takes a 2px lime border, marking it as the page's main entry point. Nothing on the board is round.
 
 ## Components
 
@@ -290,7 +284,7 @@ Panel background, rows of at least 48px divided by 1px Rule (rows with reasons g
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep lime to the active preset, «Сильный» labels, the primary action, the search border, focus, selection and tooltips.
+- **Do** keep lime to the active preset, «Сильный» labels, the primary action, the search border, focus and selection.
 - **Do** set titles, section heads and big counts in Oswald 700 uppercase, and data in Onest with tabular figures.
 - **Do** keep every table column available: pin the name and scroll sideways on narrow desktops, use labelled cards on phones.
 - **Do** state missing data in the cell («нет данных», «—») rather than hiding the row or column.

@@ -11,7 +11,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Onest:wght@400;500;600;700&display=swap">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <style>
 /* ---------- shared structure: the product's shell, identical in every world ---------- */
 *, *::before, *::after { box-sizing: border-box; }
@@ -98,12 +97,6 @@ th[aria-sort="ascending"] .sort svg { transform: rotate(180deg); }
 .band { padding-block: 40px 8px; }
 .band h2 { margin: 0; text-wrap: balance; }
 .band .lead { margin: 8px 0 0; max-width: 70ch; }
-.plot { position: relative; min-height: 360px; margin-top: 16px; }
-.plot svg { display: block; width: 100%; height: auto; }
-.plot-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 14px; font-size: 13px; }
-.plot-legend span { display: inline-flex; align-items: center; gap: 8px; }
-.plot-legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-.tip { position: absolute; pointer-events: none; z-index: 5; max-width: 18rem; padding: 8px 10px; font-size: 13px; line-height: 1.4; }
 .split { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 40px; align-items: start; }
 .src-box { max-height: 34rem; overflow: auto; margin-top: 16px; }
 table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-variant-numeric: tabular-nums; }
@@ -145,7 +138,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
   .skins td[data-l]::before { content: attr(data-l); display: block; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.65; margin-bottom: 2px; }
   .skins td.c-w.na, .skins td.c-t.na { display: none; }
   .sort-m { display: block; flex: 1 1 100%; }
-  .count-line .hint, .topnav .opt { display: none; }
+  .count-line .hint { display: none; }
   .skins td.c-30 { display: block; }
   .skins td.c-sig { grid-column: 1 / -1; padding-block: 0 !important; }
   .why { width: auto; }
@@ -153,7 +146,6 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
   .skin .sw { align-self: start; margin-top: 6px; }
   .src td.l:first-child { min-width: 10.5rem; }
   .bar { display: none; }
-  .plot { min-height: 0; }
   .skel { display: none !important; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
@@ -165,7 +157,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
   --ground: #0A0A0A; --panel: #131313; --panel2: #1B1B1B; --ink: #F2F2EE; --muted: #9A9A94; --rule: #262626; --rule2: #3A3A3A; --lime: #D4FF3A; --lime-ink: #0A0A0A;
   --up: #D4FF3A; --down: #FF6A45; --grid: #1F1F1F; --skeleton: #1C1C1C;
   --select-bg: #D4FF3A; --select-fg: #0A0A0A; --focus: #D4FF3A; --caret: #D4FF3A; --scroll-thumb: #3A3A3A; --accent-ui: #D4FF3A;
-  --st-fixed: #D4FF3A; --st-removed: #FF9F1C; --st-armory: #A58BFF; --st-drop: #6B6B66;
+  --st-removed: #FF9F1C; --st-armory: #A58BFF;
   --r-consumer: #B0C3D9; --r-industrial: #5E98D9; --r-milspec: #4B69FF; --r-restricted: #8847FF; --r-classified: #D32CE6; --r-covert: #EB4B4B; --r-contraband: #E4AE39; --r-special: #E4AE39;
   --sticky-bg: #131313;
   --f-body: "Onest", "Segoe UI", system-ui, sans-serif; --f-display: "Oswald", "Arial Narrow", sans-serif;
@@ -220,9 +212,6 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
 .world-brutal .band { padding-block: 64px 8px; }
 .world-brutal .band h2 { font-family: var(--f-display); font-weight: 700; font-size: 3.5rem; line-height: 0.9; text-transform: uppercase; }
 .world-brutal .band .lead { color: var(--muted); }
-.world-brutal .plot { background: var(--panel); border: 1px solid var(--rule); padding: 12px; }
-.world-brutal .tick { font-size: 12px; font-family: var(--f-body); }
-.world-brutal .tip { background: var(--lime); color: var(--lime-ink); }
 .world-brutal .src-box { border: 1px solid var(--rule); background: var(--panel); }
 .world-brutal .src th { background: var(--panel); font-family: var(--f-display); font-weight: 500; font-size: 12.5px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--rule2); }
 .world-brutal .src td { padding: 9px 12px; border-bottom: 1px solid var(--rule); }
@@ -262,7 +251,6 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
     <nav class="topnav" aria-label="Навигация">
       <a class="brand" href="../">terbiuz</a>
       <a href="../">Все проекты CS2</a>
-      <a class="opt" href="#market">Рынок целиком</a>
       <a class="push" href="#method">Как считаем</a>
     </nav>
     <div class="head">
@@ -342,20 +330,12 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
     </div>
   </div>
 
-  <section class="band" id="market">
-    <div class="wrap">
-      <h2>Supply против цены</h2>
-      <p class="lead">Каждая точка на графике обозначает скин из текущей выборки. Чем левее точка, тем меньше копий; чем выше, тем дороже самый дешёвый wear. Обе оси логарифмические. Наведите на точку, чтобы увидеть скин.</p>
-      <div class="plot" id="plot"></div>
-      <div class="plot-legend" id="plot-legend"></div>
-    </div>
-  </section>
-
   <section class="band" id="sources">
     <div class="wrap split">
       <div>
         <h2>Кейсы и коллекции</h2>
-        <p class="lead">Нажмите на строку, чтобы оставить в справочнике только скины из этого источника. Supply здесь равен сумме копий его обычных скинов.</p>
+        <p class="lead">Откуда берутся скины и дропается ли источник сейчас. Для долгосрока это главное: когда кейс перестаёт дропаться, новых копий его скинов больше не появляется. Нажмите на строку, чтобы оставить в справочнике только скины этого кейса или коллекции.</p>
+        <p class="lead">Supply здесь показывает, сколько всего копий у обычных скинов источника, без ножей и перчаток. Чем больше, тем чаще его открывали.</p>
         <div class="src-box">
           <table class="src">
             <thead><tr><th class="l">Источник</th><th class="l">Статус</th><th>Скинов</th><th title="Сколько ножей и перчаток выпадает из этого источника">Ножи и перч.</th><th>Supply</th></tr></thead>
@@ -366,7 +346,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
       <div id="method">
         <h2>Как считаем</h2>
         <div class="method">
-          <div><h3>Supply</h3><p>Сколько копий скина существует. Копия — это один предмет в чьём-то инвентаре: каждый раз, когда скин выпадает из кейса или получается контрактом, копий становится на одну больше. Число берём из CSFloat FloatDB, по всем wear вместе со StatTrak и сувенирами. Настоящее число больше, но для сравнения скинов между собой этого хватает. Знак «~» значит, что CSFloat округлил до тысяч.</p></div>
+          <div><h3>Supply</h3><p>Сколько копий скина существует. Копией считается один предмет в чьём-то инвентаре: каждый раз, когда скин выпадает из кейса или получается контрактом, копий становится на одну больше. Число берём из CSFloat FloatDB, по всем wear вместе со StatTrak и сувенирами. Настоящее число больше, но для сравнения скинов между собой этого хватает. Знак «~» значит, что CSFloat округлил до тысяч.</p></div>
           <div><h3>Похожие скины</h3><p>Supply сравниваем внутри одной редкости: тайное с тайным, армейское с армейским, ножи с ножами. Шансы выпадения у редкостей разные: армейское выпадает примерно в 80% открытий, тайное в 0,64%. Цену сравниваем со скинами той же редкости и того же типа оружия (винтовки с винтовками, ножи одной модели), а каждый wear с тем же wear. «Дешевле похожих» значит, что по цене скин стоит среди них ниже, чем по редкости.</p></div>
           <div><h3>Долгосрок</h3><p>Держать месяцы и годы. Признаки в порядке важности:</p>
             <ul class="checks">
@@ -383,8 +363,8 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
               <li>дешевле похожих скинов.</li>
             </ul>
             <p>Рост должен перекрыть комиссию: Steam берёт 15%, CSFloat около 2%.</p></div>
-          <div><h3>Метки</h3><p>«Сильный» — лучшие 15% скинов по сумме признаков, «Средний» — следующие 35%, «Слабый» — остальные. «Неликвид» — меньше 20 продаж на CSFloat. Под меткой написано, что сработало: плюсы и минусы. Это правило сортировки, а не совет, что покупать.</p></div>
-          <div><h3>Статус и ликвидность</h3><p>«Дропается»: кейс или коллекция выпадает в недельном дропе. «Armory»: выдаётся за звёзды Armory Pass. «Убран недавно»: вышел из дропа или Armory в 2025–2026 годах. «Не дропается»: давно не выпадает. Valve официальный список не публикует, статус взят из комьюнити-трекинга. Ликвидность — доля копий, которая недавно сменила владельца: продажи на CSFloat, делённые на supply.</p></div>
+          <div><h3>Метки</h3><p>«Сильный» получают лучшие 15% скинов по сумме признаков, «Средний» следующие 35%, «Слабый» все остальные. «Неликвид» ставим, если на CSFloat меньше 20 продаж. Под меткой написано, что сработало: плюсы и минусы. Это правило сортировки, а не совет, что покупать.</p></div>
+          <div><h3>Статус и ликвидность</h3><p>«Дропается»: кейс или коллекция выпадает в недельном дропе. «Armory»: выдаётся за звёзды Armory Pass. «Убран недавно»: вышел из дропа или Armory в 2025–2026 годах. «Не дропается»: давно не выпадает. Valve официальный список не публикует, статус взят из комьюнити-трекинга. Ликвидность показывает, какая доля копий недавно сменила владельца: продажи на CSFloat, делённые на supply.</p></div>
         </div>
       </div>
     </div>
@@ -407,7 +387,6 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
   const NF = new Intl.NumberFormat('ru-RU');
   const NF1 = new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   const NF2 = new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const NFC = new Intl.NumberFormat('ru-RU', { notation: 'compact', maximumFractionDigits: 1 });
   const PR = new Intl.PluralRules('ru-RU');
   const CASE_FORM = { one: 'кейс', few: 'кейса', many: 'кейсов', other: 'кейса' };
   const caseLabel = (v) => String(v || '').replace(/^(\d+) кейсов$/, (_, n) => n + ' ' + CASE_FORM[PR.select(+n)]);
@@ -566,45 +545,6 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
       <td>${own.has(c.case) ? NF.format(own.get(c.case)) : '<span class="na">—</span>'}</td></tr>`).join('');
   }
 
-  function drawPlot(rows) {
-    const box = $('#plot');
-    box.replaceChildren();
-    const pts = rows.filter((s) => s.supply > 0 && s.min_price > 0);
-    if (!pts.length) { box.innerHTML = '<p class="empty">В этой выборке нет скинов с известным supply.</p>'; return; }
-    const cs = getComputedStyle(document.documentElement);
-    const col = (st) => cs.getPropertyValue('--st-' + STATUS[st]).trim();
-    const W = Math.max(320, box.clientWidth), H = W < 600 ? 300 : Math.round(Math.min(620, Math.max(360, W * 0.36)));
-    const m = { t: 12, r: 34, b: 36, l: 58 };
-    const x = d3.scaleLog(d3.extent(pts, (d) => d.supply), [m.l, W - m.r]).nice();
-    const y = d3.scaleLog(d3.extent(pts, (d) => d.min_price), [H - m.b, m.t]).nice();
-    const lead = (t) => Math.round(t / Math.pow(10, Math.floor(Math.log10(t))));
-    const ticks = (sc) => { const a = sc.ticks(); const ones = a.filter((t) => lead(t) === 1); return ones.length >= 3 ? ones : a.filter((t) => [1, 2, 5].includes(lead(t))); };
-    const svg = d3.select(box).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Supply против цены');
-    const gridc = cs.getPropertyValue('--grid').trim(), muted = cs.getPropertyValue('--muted').trim();
-    svg.append('g').selectAll('line').data(ticks(y)).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).attr('stroke', gridc);
-    svg.append('g').selectAll('text').data(ticks(y)).join('text').attr('x', m.l - 8).attr('y', y).attr('dy', '0.32em').attr('text-anchor', 'end').attr('class', 'tick').attr('fill', muted).text((t) => '$' + (t < 1 ? NF2.format(t) : NFC.format(t)));
-    const xt = ticks(x).filter((_, i, a) => (W >= 600 && a.length < 8) || i % 2 === 0);
-    svg.append('g').selectAll('text').data(xt).join('text').attr('x', x).attr('y', H - m.b + 20).attr('text-anchor', (t, i, a) => (i === a.length - 1 ? 'end' : 'middle')).attr('class', 'tick').attr('fill', muted).text((t) => NFC.format(t));
-    svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', H - m.b).attr('y2', H - m.b).attr('stroke', muted);
-    const sorted = [...pts].sort((a, b) => STATUS_ORDER[b.status] - STATUS_ORDER[a.status]);
-    svg.append('g').selectAll('circle').data(sorted).join('circle').attr('cx', (d) => x(d.supply)).attr('cy', (d) => y(d.min_price)).attr('r', W < 600 ? 2.4 : 3.2).attr('fill', (d) => col(d.status)).attr('fill-opacity', (d) => (d.status === 'Не дропается' ? 0.55 : 0.85));
-    const hl = svg.append('circle').attr('r', 7).attr('fill', 'none').attr('stroke-width', 2).style('display', 'none');
-    const tip = d3.select(box).append('div').attr('class', 'tip').style('display', 'none');
-    const dl = d3.Delaunay.from(sorted, (d) => x(d.supply), (d) => y(d.min_price));
-    svg.on('pointermove', (ev) => {
-      const [mx, my] = d3.pointer(ev);
-      const d = sorted[dl.find(mx, my)];
-      if (!d || Math.hypot(x(d.supply) - mx, y(d.min_price) - my) > 28) { hl.style('display', 'none'); tip.style('display', 'none'); return; }
-      const mm = M.get(d.id);
-      hl.style('display', null).attr('cx', x(d.supply)).attr('cy', y(d.min_price)).attr('stroke', col(d.status));
-      tip.style('display', null).html(`<b>${esc(d.name)}</b><br>${esc(caseLabel(d.case))} · ${esc(d.status)}<br>Supply ${NF.format(d.supply)} · от ${usd(d.min_price)}<br>Долгосрок: ${mm.lt_label} · Краткосрок: ${mm.st_label}`);
-      const k = box.clientWidth / W, tw = tip.node().offsetWidth, th = tip.node().offsetHeight;
-      tip.style('left', Math.min(Math.max(0, x(d.supply) * k + 12), box.clientWidth - tw) + 'px').style('top', Math.max(0, y(d.min_price) * k - th - 10) + 'px');
-    });
-    svg.on('pointerleave', () => { hl.style('display', 'none'); tip.style('display', 'none'); });
-    $('#plot-legend').innerHTML = Object.keys(STATUS).map((st) => `<span><i style="background:${col(st)}"></i>${st}</span>`).join('');
-  }
-
   function render() {
     if (!SKINS) return;
     const base = filtered(true);
@@ -622,7 +562,6 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
     $('#shown').textContent = NF.format(rows.length);
     drawRows(rows);
     drawSources();
-    drawPlot(rows);
     reflect();
   }
 
@@ -656,9 +595,6 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
   const pickSrc = (tr) => { if (!tr) return; set({ src: S.src === tr.dataset.src ? '' : tr.dataset.src }, true); document.querySelector('.presets-row').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
   $('#src-rows').addEventListener('click', (e) => pickSrc(e.target.closest('tr[data-src]')));
   $('#src-rows').addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pickSrc(e.target.closest('tr[data-src]')); } });
-  let lastW = window.innerWidth;
-  window.addEventListener('resize', () => { if (window.innerWidth !== lastW && SKINS) { lastW = window.innerWidth; drawPlot(filtered(false)); } });
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => SKINS && drawPlot(filtered(false)));
 
   $('#rows').innerHTML = Array.from({ length: 12 }, () => '<tr class="skel">' + '<td class="l"><span></span></td>'.repeat(2) + '<td><span></span></td>'.repeat(11) + '</tr>').join('');
   Promise.all(['skins', 'sources', 'trends'].map((n) => fetch(BASE + n + '.json').then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })))
