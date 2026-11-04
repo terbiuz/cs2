@@ -69,10 +69,11 @@ table.skins { width: 100%; border-collapse: separate; border-spacing: 0; font-va
 .sort svg { width: 9px; height: 9px; opacity: 0; }
 th[aria-sort] .sort svg { opacity: 1; }
 th[aria-sort="ascending"] .sort svg { transform: rotate(180deg); }
-.skin { display: grid; grid-template-columns: 10px minmax(0, 1fr); gap: 1px 10px; align-items: center; white-space: nowrap; min-width: 21rem; }
+.skin { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; gap: 1px 10px; align-items: center; white-space: nowrap; min-width: 21rem; }
 .skin .sw { width: 10px; height: 10px; grid-row: 1 / span 2; }
 .skin .nm { display: block; }
 .skin .nm .code { display: inline-block; margin-left: 8px; vertical-align: 1px; white-space: nowrap; }
+.skin .ins { grid-column: 3; grid-row: 1 / span 2; }
 .skin small { grid-column: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .r-consumer { background: var(--r-consumer); } .r-industrial { background: var(--r-industrial); } .r-milspec { background: var(--r-milspec); } .r-restricted { background: var(--r-restricted); }
 .r-classified { background: var(--r-classified); } .r-covert { background: var(--r-covert); } .r-contraband { background: var(--r-contraband); } .r-special { background: var(--r-special); }
@@ -215,6 +216,13 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
 .world-brutal .grade .score { font-weight: 500; font-variant-numeric: tabular-nums; color: var(--ink); }
 .world-brutal .grade .tier.c + .score { color: var(--muted); }
 .world-brutal .legend .tier + .tier { margin-left: 3px; }
+.world-brutal .ins { display: inline-grid; place-items: center; width: 30px; height: 30px; border: 1px solid var(--rule2); color: var(--muted); font-style: normal; flex: none; }
+.world-brutal .legend .ins { width: 22px; height: 22px; }
+.world-brutal .ins svg { width: 16px; height: 16px; }
+.world-brutal .legend .ins svg { width: 14px; height: 14px; }
+.world-brutal a.ins { transition: color 0.15s ease-out, border-color 0.15s ease-out; }
+.world-brutal a.ins:hover { color: var(--ink); border-color: var(--ink); }
+@media (max-width: 760px) and (pointer: coarse) { .world-brutal .skin .ins, .world-brutal .legend > span:has(.ins) { display: none; } }
 .world-brutal .sig.sv { display: inline-block; line-height: 1.15; vertical-align: middle; }
 .world-brutal .sig.bad { color: var(--down); }
 .world-brutal .c-t.up, .world-brutal .c-t.down { font-weight: 600; }
@@ -316,6 +324,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
       <span><i class="stamp removed">Убран недавно</i>кейс недавно ушёл из дропа</span>
       <span><i class="stamp armory">Armory</i>выдаётся за звёзды Armory Pass</span>
       <span><i class="stamp drop">Дропается</i>supply растёт каждую неделю</span>
+      <span><i class="ins"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1.2 8S3.8 3.3 8 3.3 14.8 8 14.8 8 12.2 12.7 8 12.7 1.2 8 1.2 8z" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2.1" fill="currentColor"/></svg></i>кнопка у названия открывает скин в CS2 через Steam, в лучшем wear</span>
     </p>
     <div class="count-line"><span>Показано <b id="shown" class="num">—</b> из 2 126</span><span class="hint">Нажмите на заголовок колонки, чтобы отсортировать</span></div>
     <div class="table-box">
@@ -372,7 +381,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
           <div><h3>Краткосрок</h3><p>Держать дни и недели. Баллы:</p>
             <ul class="checks">
               <li>много продаж, до 35: быстро купить и быстро продать;</li>
-              <li>цена выросла за 7 дней, до 25, без тренда 10;</li>
+              <li>цена ниже обычной, до 25: средняя за 7 дней против средней за 90, чем глубже просадка, тем больше. Без тренда 10. У скинов дешевле $1 тоже 10: на центах проценты скачут сами по себе. Скины, которые ещё дропаются или выдаются в Armory, дешевеют от новых копий, поэтому за их просадку баллов нет;</li>
               <li>повод для роста, до 20: убран недавно 20, Armory 10, не дропается 8, дропается 0;</li>
               <li>дешевле похожих, до 20.</li>
             </ul>
@@ -445,7 +454,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
     const peerName = (s, k) => (k.startsWith('m:') ? 'других ' + s.weapon : 'похожих ' + (k.startsWith('c:') ? CAT_GEN[s.category] : RARITY_GEN[groupOf(s)]));
     const priceRank = (s, p) => { let sum = 0, n = 0; WEARS.forEach((w) => { if (s[w] > 0 && p[w].length >= 5) { sum += rankIn(p[w], s[w]); n++; } }); return n ? sum / n : 0.5; };
     const vols = ok.map((s) => s.sales_volume).sort((x, y) => x - y);
-    const trendOf = (id) => { const t = tr.get(id); if (!t || t.vol90 < 10) return { t7: null, t30: null }; return { t7: t.vol7 >= 3 ? change(t.med7, t.med90) : null, t30: t.vol30 >= 5 ? change(t.med30, t.med90) : null }; };
+    const trendOf = (id) => { const t = tr.get(id); if (!t || t.vol90 < 10) return { t7: null, t30: null }; return { t7: t.vol7 >= 3 ? change(t.med7, t.med90) : null, t30: t.vol30 >= 5 ? change(t.med30, t.med90) : null, p90: t.med90 }; };
     const t7s = ok.map((s) => trendOf(s.id).t7).filter((v) => v != null).sort((x, y) => x - y);
     // New copies, 1 = few. Case skins: the dearer the case, the fewer people open it (cheapest case if several).
     // Knives and gloves: also how much their number could grow if every Covert of their cases went into trade-ups (5 Coverts give 1).
@@ -480,13 +489,17 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
         const value = 1 - priceRank(s, p);
         const nc = newCopies(s);
         const liq = rankIn(vols, s.sales_volume);
-        const momentum = t.t7 == null ? 0.4 : rankIn(t7s, t.t7);
+        // Cheaper than usual: the 7-day median against the 90-day one, the deeper the dip the more points. Cents skins
+        // jump by themselves and stay neutral; skins that still drop or come from Armory get cheaper from new copies, so a dip gives them nothing.
+        const dipOk = t.t7 != null && t.p90 >= 1;
+        const below = dipOk ? 1 - rankIn(t7s, t.t7) : 0.4;
+        const dip = dipOk && (s.status === 'Дропается' || s.status === 'Armory') ? Math.min(0.4, below) : below;
         r.liq = Math.round((s.sales_volume / s.supply) * 10000) / 100;
         r.cheap = value >= 0.8;
         r.code = scarcity >= 0.95 ? 'SSP' : scarcity >= 0.8 ? 'SP' : '';
         r.ltRaw = 35 * statusLT[s.status] + 25 * rare + 25 * nc.v + 15 * value;
-        r.stRaw = 35 * liq + 25 * momentum + 20 * catalyst[s.status] + 20 * value;
-        r.f = { rare, value, liq, nc, peer: peerName(s, k) };
+        r.stRaw = 35 * liq + 25 * dip + 20 * catalyst[s.status] + 20 * value;
+        r.f = { rare, value, liq, nc, dip, dipOk, peer: peerName(s, k) };
       }
       // No regular version on the market, only Souvenir, and Souvenir prices are not collected.
       if (s.souvenir && !(s.min_price > 0)) { r.lt_label = r.st_label = 'Только сувенир'; r.note = 'есть только сувенирная версия, а её цены сайт не собирает'; }
@@ -507,7 +520,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
       r.lt_label = capped ? 'B' : tierOf(pl);
       r.st_label = s.sales_volume < 20 ? 'Неликвид' : tierOf(ps);
       // Pluses and minuses, each factor once, in a fixed order: supply, new copies, price, sales, trend. Status has its own column.
-      const { rare, value, liq, nc, peer } = r.f;
+      const { rare, value, liq, nc, dip, dipOk, peer } = r.f;
       const sold = NF.format(s.sales_volume);
       const many = s.category === 'Перчатки' ? 'перчаток' : 'ножей';
       const traded = nc.trade == null ? '' : `, из тайных ещё +${NF.format(Math.round(nc.trade * 100))}%`;
@@ -517,7 +530,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
         : nc.v >= 0.75 ? [true, `кейс дорогой, ${usd(nc.price)}: его редко открывают`] : nc.v <= 0.25 ? [false, `кейс дешёвый, ${usd(nc.price)}: его открывают массово`] : null;
       const price = value >= 0.8 ? [true, 'дешевле ' + peer] : value <= 0.2 ? [false, 'дороже ' + peer] : null;
       const sells = s.sales_volume < 20 ? [false, `почти нет продаж: ${sold}`] : liq >= 0.7 ? [true, `много продаж: ${sold}`] : liq <= 0.25 ? [false, `мало продаж: ${sold}`] : null;
-      const trend = r.t7 == null ? null : r.t7 >= 3 ? [true, `цена +${NF1.format(r.t7)}% за 7 дней`] : r.t7 <= -3 ? [false, `цена −${NF1.format(-r.t7)}% за 7 дней`] : null;
+      const trend = !dipOk ? null : dip >= 0.75 && r.t7 <= -3 ? [true, `на ${NF1.format(-r.t7)}% дешевле обычного`] : r.t7 >= 3 ? [false, `уже на ${NF1.format(r.t7)}% дороже обычного`] : null;
       const cap = capped ? [false, `${stop}: в долгосроке выше B не ставим`] : null;
       r.why = [supplyWhy, copiesWhy, price, sells, trend, cap].filter(Boolean);
       delete r.f;
@@ -567,6 +580,35 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
     return `<ul class="why">${m.why.map(([pro, text]) => `<li class="${pro ? 'pro' : 'con'}">${esc(text)}</li>`).join('')}</ul>`;
   };
 
+  // In-game inspect: CS2 opens any skin from a preview link that carries weapon, paint, rarity, wear and pattern
+  // (a CEconItemPreviewDataBlock protobuf after a zero key byte, then a checksum), the same links SteamDB builds.
+  // Our ids are "weapon-paint". Wear: the middle of the skin's best wear band; pattern 0.
+  const EYE = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1.2 8S3.8 3.3 8 3.3 14.8 8 14.8 8 12.2 12.7 8 12.7 1.2 8 1.2 8z" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2.1" fill="currentColor"/></svg>';
+  const CRC = Array.from({ length: 256 }, (_, n) => { for (let k = 0; k < 8; k++) n = n & 1 ? 0xEDB88320 ^ (n >>> 1) : n >>> 1; return n >>> 0; });
+  const RARITY_NO = { 'Consumer': 1, 'Industrial': 2, 'Mil-Spec': 3, 'Restricted': 4, 'Classified': 5, 'Covert': 6, 'Contraband': 7, '★ Rare Special': 6 };
+  const WEAR_TOP = [0.07, 0.15, 0.38, 0.45, 1];
+  const LINKS = new Map();
+  const inspect = (s) => {
+    if (LINKS.has(s.id)) return LINKS.get(s.id);
+    const [def, paint] = s.id.split('-').map(Number);
+    const b = [0];
+    const varint = (v) => { while (v > 127) { b.push((v & 127) | 128); v = Math.floor(v / 128); } b.push(v); };
+    const field = (no, v) => { varint(no << 3); varint(v); };
+    field(3, def); field(4, paint); field(5, RARITY_NO[s.rarity] || 6);
+    if (s.rarity === '★ Rare Special') field(6, 3);
+    if (paint) {
+      const top = WEAR_TOP.find((t) => t > s.float_min) || 1, f = new DataView(new ArrayBuffer(4));
+      f.setFloat32(0, (s.float_min + Math.min(s.float_max, top)) / 2, true); field(7, f.getUint32(0, true));
+    }
+    field(8, 0);
+    let crc = 0xFFFFFFFF; for (const x of b) crc = CRC[(crc ^ x) & 255] ^ (crc >>> 8); crc = (crc ^ 0xFFFFFFFF) >>> 0;
+    const sum = ((crc & 0xFFFF) ^ Math.imul(b.length - 1, crc)) >>> 0;
+    b.push(sum >>> 24, (sum >>> 16) & 255, (sum >>> 8) & 255, sum & 255);
+    const url = 'steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20' + b.map((x) => x.toString(16).padStart(2, '0')).join('').toUpperCase();
+    LINKS.set(s.id, url);
+    return url;
+  };
+
   function drawRows(rows) {
     const keys = wearKeys();
     const WL = ['FN', 'MW', 'FT', 'WW', 'BS'];
@@ -577,7 +619,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
       const wears = keys.map((k, i) => `<td class="c-w${i >= 3 ? ' cw-x' : ''}${s[k] == null ? ' na' : ''}" data-l="${WL[i]}${S.st ? ' ST' : ''}">${s[k] == null ? '—' : usd(s[k])}</td>`).join('');
       const tcls = (v) => (v == null ? ' na' : v >= 3 ? ' up' : v <= -3 ? ' down' : '');
       return `<tr>
-        <td class="l c-name"><div class="skin"><i class="sw r-${RARITY[s.rarity] || 'special'}" title="${esc(RARITY_RU[s.rarity] || s.rarity)}"></i><span class="nm"><b>${esc(s.name)}</b>${m.code ? `<i class="code ${m.code.toLowerCase()}" title="${m.code === 'SSP' ? '5% скинов с самым малым supply в своей редкости' : 'Следующие 15% по малому supply в своей редкости'}">${m.code}</i>` : ''}</span><small title="${esc(s.cases_all)}">${esc(caseLabel(s.case))}</small></div></td>
+        <td class="l c-name"><div class="skin"><i class="sw r-${RARITY[s.rarity] || 'special'}" title="${esc(RARITY_RU[s.rarity] || s.rarity)}"></i><span class="nm"><b>${esc(s.name).replace(/ \(([^()]+)\)$/, (_, p) => ' (' + p.replace(/ /g, '&nbsp;') + ')')}</b>${m.code ? `<i class="code ${m.code.toLowerCase()}" title="${m.code === 'SSP' ? '5% скинов с самым малым supply в своей редкости' : 'Следующие 15% по малому supply в своей редкости'}">${m.code}</i>` : ''}</span><small title="${esc(s.cases_all)}">${esc(caseLabel(s.case))}</small><a class="ins" href="${inspect(s)}" title="Осмотреть в CS2" aria-label="Осмотреть ${esc(s.name)} в CS2">${EYE}</a></div></td>
         <td class="l c-st"><i class="stamp ${STATUS[s.status]}">${esc(s.status)}</i></td>
         <td data-l="Supply">${supply}</td>
         ${wears}
