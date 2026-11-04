@@ -207,6 +207,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
 .world-brutal .sig { font-style: normal; font-family: var(--f-display); font-weight: 600; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; }
 .world-brutal .sig.hi { background: var(--lime); color: var(--lime-ink); padding: 3px 8px; }
 .world-brutal .sig.lo, .world-brutal .sig.na { color: var(--muted); font-weight: 500; }
+.world-brutal .sig.sv { display: inline-block; line-height: 1.15; vertical-align: middle; }
 .world-brutal .sig.bad { color: var(--down); }
 .world-brutal .c-t.up, .world-brutal .c-t.down { font-weight: 600; }
 .world-brutal .band { padding-block: 64px 8px; }
@@ -365,7 +366,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
               <li>дешевле похожих скинов.</li>
             </ul>
             <p>Рост должен перекрыть комиссию: Steam берёт 15%, CSFloat около 2%.</p></div>
-          <div><h3>Метки</h3><p>«Сильный» получают лучшие 15% скинов по сумме признаков, «Средний» следующие 35%, «Слабый» все остальные. «Неликвид» ставим, если на CSFloat меньше 20 продаж. В колонке «Плюсы и минусы» написано, что выделяется у скина по supply, цене, продажам и тренду. Это правило сортировки, а не совет, что покупать.</p></div>
+          <div><h3>Метки</h3><p>«Сильный» получают лучшие 15% скинов по сумме признаков, «Средний» следующие 35%, «Слабый» все остальные. «Неликвид» ставим, если на CSFloat меньше 20 продаж. «Только сувенир» значит, что обычной версии скина нет, а цены сувенирных сайт не собирает, поэтому оценки нет. В колонке «Плюсы и минусы» написано, что выделяется у скина по supply, цене, продажам и тренду. Это правило сортировки, а не совет, что покупать.</p></div>
           <div><h3>Статус и ликвидность</h3><p>«Дропается»: кейс или коллекция выпадает в недельном дропе. «Armory»: выдаётся за звёзды Armory Pass. «Убран недавно»: вышел из дропа или Armory в 2025–2026 годах. «Не дропается»: давно не выпадает. Valve официальный список не публикует, статус взят из комьюнити-трекинга. Колонка «Продаж» показывает, сколько раз скин продали на CSFloat: по этому числу судим, легко ли его продать. «Много продаж» значит больше, чем у 70% скинов, «мало» значит меньше, чем у 75%. Ликвидность показывает долю: продажи, делённые на supply.</p></div>
         </div>
       </div>
@@ -398,7 +399,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
   const STATUS_ORDER = { 'Дропается': 0, 'Armory': 1, 'Убран недавно': 2, 'Не дропается': 3 };
   const RARITY = { 'Consumer': 'consumer', 'Industrial': 'industrial', 'Mil-Spec': 'milspec', 'Restricted': 'restricted', 'Classified': 'classified', 'Covert': 'covert', 'Contraband': 'contraband', '★ Rare Special': 'special' };
   const RARITY_RU = { 'Consumer': 'Ширпотреб', 'Industrial': 'Промышленное', 'Mil-Spec': 'Армейское', 'Restricted': 'Запрещённое', 'Classified': 'Засекреченное', 'Covert': 'Тайное', 'Contraband': 'Контрабанда', '★ Rare Special': '★ Нож или перчатки' };
-  const SIG = { 'Сильный': 'hi', 'Средний': 'mid', 'Слабый': 'lo', 'Неликвид': 'bad', 'Нет данных': 'na' };
+  const SIG = { 'Сильный': 'hi', 'Средний': 'mid', 'Слабый': 'lo', 'Неликвид': 'bad', 'Нет данных': 'na', 'Только сувенир': 'na sv' };
   const DEFAULTS = { q: '', cat: '', kind: '', status: '', rarity: '', signal: '', st: false, sort: 'lt', dir: 'desc', src: '' };
   const S = { ...DEFAULTS };
   let SKINS = null, SOURCES = null, M = new Map(), LOGMIN = 0, LOGMAX = 1;
@@ -450,6 +451,8 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
         r.st = Math.round(35 * liq + 25 * momentum + 20 * catalyst[s.status] + 20 * value);
         r.f = { scarcity, value, liq, peer: peerName(s, k) };
       }
+      // No regular version on the market, only Souvenir, and Souvenir prices are not collected.
+      if (s.souvenir && !(s.min_price > 0)) { r.lt_label = r.st_label = 'Только сувенир'; r.note = 'есть только сувенирная версия, а её цены сайт не собирает'; }
       out.set(s.id, r);
     }
     const lts = [...out.values()].filter((r) => r.lt != null).map((r) => r.lt).sort((x, y) => x - y);
@@ -503,8 +506,10 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
     return m[k];
   };
 
+  // The souvenir label breaks onto two lines so it stays no wider than the other labels.
+  const sig = (label, score) => `<i class="sig ${SIG[label]}"${score != null ? ` title="Оценка ${score} из 100"` : ''}>${label === 'Только сувенир' ? 'Только<br>сувенир' : label}</i>`;
   const why = (m) => {
-    if (m.lt == null) return '<span class="na">—</span>';
+    if (m.lt == null) return m.note ? `<ul class="why"><li class="neu">${esc(m.note)}</li></ul>` : '<span class="na">—</span>';
     if (!m.why.length) return '<ul class="why"><li class="neu">ничего не выделяется</li></ul>';
     return `<ul class="why">${m.why.map(([pro, text]) => `<li class="${pro ? 'pro' : 'con'}">${esc(text)}</li>`).join('')}</ul>`;
   };
@@ -527,8 +532,8 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
         <td class="c-30 c-t${tcls(m.t30)}" data-l="30 дней">${m.t30 == null ? '—' : pct(m.t30, true)}</td>
         <td data-l="Продаж">${NF.format(s.sales_volume)}</td>
         <td data-l="Ликвидность">${m.liq == null ? '<span class="na">—</span>' : pct(m.liq)}</td>
-        <td class="l c-sig" data-l="Долгосрок"><i class="sig ${SIG[m.lt_label]}"${m.lt != null ? ` title="Оценка ${m.lt} из 100"` : ''}>${m.lt_label}</i></td>
-        <td class="l c-sig" data-l="Краткосрок"><i class="sig ${SIG[m.st_label]}"${m.st != null ? ` title="Оценка ${m.st} из 100"` : ''}>${m.st_label}</i></td>
+        <td class="l c-sig" data-l="Долгосрок">${sig(m.lt_label, m.lt)}</td>
+        <td class="l c-sig" data-l="Краткосрок">${sig(m.st_label, m.st)}</td>
         <td class="l c-why" data-l="Плюсы и минусы">${why(m)}</td>
       </tr>`;
     });

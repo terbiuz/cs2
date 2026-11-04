@@ -275,7 +275,7 @@ Four tiles acting as filter toggles (`aria-pressed`), each a big Oswald count ov
 ### Status Stamps and Rarity Codes
 - **Stamps:** outlined uppercase tags with a 6.8rem minimum width so a column of them aligns. "No longer drops" is lime-outlined; "recently removed" orange; Armory violet; "drops" Rule Strong with Ash text.
 - **Codes:** SSP is a Bone-filled tag with Ground text; SP is a Bone outline.
-- **Signals:** «Сильный» lime fill; «Средний» Bone text; «Слабый» and «Нет данных» Ash; «Неликвид» Ember Down text.
+- **Signals:** «Сильный» lime fill; «Средний» Bone text; «Слабый», «Нет данных» and «Только сувенир» Ash; «Неликвид» Ember Down text. «Только сувенир» breaks onto two lines so the label column keeps its width.
 - **Pluses and minuses:** one «Плюсы и минусы» column after the two signals. Each factor appears at most once, in a fixed order: supply against the same rarity, price against similar skins, number of sales, 7-day trend. Status is never repeated there because it has its own column. Onest 12px Ash; each line starts with a bold sign, lime «+» or Ember «−». A skin with nothing notable reads «ничего не выделяется» without a sign. The column is 13rem wide (11rem below 1760px).
 
 ### Data Table
