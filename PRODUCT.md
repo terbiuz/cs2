@@ -30,7 +30,7 @@ It joins supply counts with the drop status of the skin's source, so a viewer se
 - Interface language is Russian; skin, case and collection names stay in English as in the game; the term «supply» stays in English by the owner's choice; rarities use the Russian game names (Тайное, Засекреченное, Запрещённое, Армейское, Промышленное, Ширпотреб); prices are in USD.
 - Features to keep: search, filters (weapon type, case or collection, drop status, rarity, signal), StatTrak price toggle, sortable table of all skins, case and collection table that filters the skin table and explains why drop status matters, summary figures, method explanation. The supply-versus-price scatter plot was removed at the owner's request on 3 November 2026: viewers could not act on it.
 - Drop statuses: drops weekly, Armory, recently removed, no longer drops.
-- Supply is still missing for some skins (373 of 2,126 on 3 November 2026: mostly cheap collection skins, some Mil-Spec case skins and the vanilla knives); the page counts them from the data and says so rather than hiding it.
+- Supply is known for all 2,126 skins (CSFloat FloatDB, 3 November 2026). The page counts it from the data, so if a future refresh leaves gaps it says so rather than hiding them.
 - Must show data sources (CSFloat, Skinport, community drop-pool tracking), the snapshot date, a not-financial-advice note, and that the site is not affiliated with Valve, CSFloat or Skinport.
 
 ## Brand Commitments
