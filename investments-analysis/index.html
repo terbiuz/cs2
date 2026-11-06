@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Onest:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@900&family=Oswald:wght@500;600;700&family=Onest:wght@400;500;600;700&display=swap">
 <style>
 /* ---------- shared structure: the product's shell, identical in every world ---------- */
 *, *::before, *::after { box-sizing: border-box; }
@@ -163,7 +163,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
   --hatch: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0 3px, transparent 3px 24px);
   --r-consumer: #B0C3D9; --r-industrial: #5E98D9; --r-milspec: #4B69FF; --r-restricted: #8847FF; --r-classified: #D32CE6; --r-covert: #EB4B4B; --r-contraband: #E4AE39; --r-special: #E4AE39;
   --sticky-bg: #0E0A15;
-  --f-body: "Onest", "Segoe UI", system-ui, sans-serif; --f-display: "Oswald", "Arial Narrow", sans-serif;
+  --f-body: "Onest", "Segoe UI", system-ui, sans-serif; --f-display: "Oswald", "Arial Narrow", sans-serif; --f-brand: "Unbounded", "Arial Black", sans-serif;
 }
 .world-brutal body { font-size: 15px; background: radial-gradient(70rem 36rem at 84% -10rem, rgba(138, 43, 255, 0.3), transparent 70%) no-repeat, var(--ground); }
 .world-brutal .topnav { border-bottom: 1px solid var(--rule); color: var(--muted); font-family: var(--f-display); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; font-size: 13px; }
@@ -171,7 +171,8 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
 .world-brutal .topnav .brand svg { display: block; height: 15px; width: auto; }
 .world-brutal .topnav a:hover { color: var(--ink); }
 .world-brutal .masthead .head { padding-block: 28px 26px; }
-.world-brutal .title { font-family: var(--f-display); font-weight: 700; font-size: 5.5rem; line-height: 0.86; text-transform: uppercase; letter-spacing: -0.005em; }
+.world-brutal .title { font-family: var(--f-brand); font-weight: 900; font-size: clamp(2.6rem, calc((100vw - 640px) / 9.6), 5rem); line-height: 0.92; text-transform: uppercase; letter-spacing: -0.01em; }
+@media (min-width: 761px) and (max-width: 1100px) { .world-brutal .title { font-size: 4.5rem; } }
 .world-brutal .issue { color: var(--muted); font-size: 15px; margin-top: 14px; }
 .world-brutal .search { background: var(--panel); border: 2px solid var(--violet); height: 66px; padding: 0 20px; }
 .world-brutal .search svg { color: var(--violet-hot); }
@@ -179,7 +180,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
 .world-brutal .search input::placeholder { color: #8A8A85; }
 .world-brutal .presets { gap: 12px; padding-bottom: 4px; }
 .world-brutal .preset { flex-direction: column; align-items: flex-start; gap: 6px; padding: 18px 20px 16px; background: var(--panel); border: 1px solid var(--rule); color: var(--ink); transition: background-color 0.15s ease-out, border-color 0.15s ease-out; }
-.world-brutal .preset b { font-family: var(--f-display); font-weight: 700; font-size: 3.25rem; line-height: 0.95; }
+.world-brutal .preset b { font-family: var(--f-brand); font-weight: 900; font-size: 2.75rem; line-height: 1; letter-spacing: -0.01em; }
 .world-brutal .preset span { font-family: var(--f-display); font-weight: 500; font-size: 14px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
 .world-brutal .preset:hover:not(.on) { border-color: var(--rule2); background: var(--panel2); }
 .world-brutal .preset.on { background: var(--hatch), var(--violet); border-color: var(--violet); color: var(--on-violet); }
@@ -211,7 +212,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
 .world-brutal .sig { font-style: normal; font-family: var(--f-display); font-weight: 600; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; }
 .world-brutal .sig.na { color: var(--muted); font-weight: 500; }
 .world-brutal .grade { display: inline-flex; align-items: center; gap: 8px; }
-.world-brutal .tier { display: inline-block; min-width: 22px; padding: 0 4px; text-align: center; font-style: normal; font-family: var(--f-display); font-weight: 600; font-size: 13px; line-height: 20px; border: 1px solid transparent; }
+.world-brutal .tier { display: inline-block; min-width: 22px; padding: 0 4px; text-align: center; font-style: normal; font-family: var(--f-brand); font-weight: 900; font-size: 12.5px; line-height: 20px; border: 1px solid transparent; }
 .world-brutal .tier.s { background: var(--violet); border-color: var(--violet); color: var(--on-violet); }
 .world-brutal .tier.a { border-color: var(--violet); color: var(--violet-hot); }
 .world-brutal .tier.b { border-color: var(--rule2); color: var(--ink); }
@@ -230,7 +231,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
 .world-brutal .sig.bad { color: var(--down); }
 .world-brutal .c-t.up, .world-brutal .c-t.down { font-weight: 600; }
 .world-brutal .band { padding-block: 64px 8px; }
-.world-brutal .band h2 { font-family: var(--f-display); font-weight: 700; font-size: 3.5rem; line-height: 0.9; text-transform: uppercase; }
+.world-brutal .band h2 { font-family: var(--f-brand); font-weight: 900; font-size: 2.5rem; line-height: 1; text-transform: uppercase; letter-spacing: -0.01em; text-wrap: balance; }
 .world-brutal .band .lead { color: var(--muted); }
 .world-brutal .src-box { border: 1px solid var(--rule); background: var(--panel); }
 .world-brutal .src th { background: var(--panel); font-family: var(--f-display); font-weight: 500; font-size: 12.5px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--rule2); }
@@ -238,7 +239,7 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
 .world-brutal .src td small { display: block; font-size: 12px; color: var(--muted); }
 .world-brutal .src tbody tr:hover td { background: var(--panel2); }
 .world-brutal .src tbody tr.on td { background: var(--panel2); box-shadow: inset 0 -2px 0 var(--violet); }
-.world-brutal .method h3 { font-family: var(--f-display); font-weight: 600; font-size: 1.25rem; text-transform: uppercase; letter-spacing: 0.03em; }
+.world-brutal .method h3 { font-family: var(--f-brand); font-weight: 900; font-size: 0.95rem; line-height: 1.25; text-transform: uppercase; letter-spacing: 0.02em; }
 .world-brutal .method p, .world-brutal .checks { color: var(--muted); }
 .world-brutal .checks li::before { color: var(--up); font-weight: 700; }
 .world-brutal .why { font-size: 12px; line-height: 1.3; color: var(--muted); }
@@ -250,9 +251,9 @@ table.src { width: 100%; border-collapse: separate; border-spacing: 0; font-vari
 .world-brutal .foot { color: var(--muted); border-top: 1px solid var(--rule); margin-top: 56px; }
 .world-brutal .empty button { border: 1px solid var(--violet); color: var(--violet-hot); background: none; padding: 10px 18px; font-family: var(--f-display); text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; }
 @media (max-width: 760px) {
-  .world-brutal .title { font-size: 3.4rem; }
-  .world-brutal .preset b { font-size: 2.4rem; }
-  .world-brutal .band h2 { font-size: 2.4rem; }
+  .world-brutal .title { font-size: clamp(2rem, calc((100vw - 48px) / 9.8), 4.5rem); }
+  .world-brutal .preset b { font-size: 2rem; }
+  .world-brutal .band h2 { font-size: 1.6rem; }
   .world-brutal .search input { font-size: 16px; }
   .world-brutal .table-box { border: 0; background: none; }
   .world-brutal .skins tr { border-bottom: 1px solid var(--rule); }

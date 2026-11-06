@@ -1,6 +1,6 @@
 ---
 name: terbiuz CS2
-description: Brutalist market board for CS2 skin data in the TerbiuZ brand colours — violet-black void, one violet signal, white plates, condensed uppercase headlines.
+description: Brutalist market board for CS2 skin data in the TerbiuZ brand colours — violet-black void, one violet signal, white plates, wide Unbounded Black headlines over condensed Oswald labels.
 colors:
   ground: "#050407"
   panel: "#0E0A15"
@@ -22,26 +22,27 @@ colors:
   rarity-special: "#E4AE39"
 typography:
   display:
-    fontFamily: "Oswald, Arial Narrow, sans-serif"
-    fontSize: "5.5rem"
-    fontWeight: 700
-    lineHeight: 0.86
-    letterSpacing: "-0.005em"
+    fontFamily: "Unbounded, Arial Black, sans-serif"
+    fontSize: "5rem"
+    fontWeight: 900
+    lineHeight: 0.92
+    letterSpacing: "-0.01em"
   headline:
-    fontFamily: "Oswald, Arial Narrow, sans-serif"
-    fontSize: "3.5rem"
-    fontWeight: 700
-    lineHeight: 0.9
+    fontFamily: "Unbounded, Arial Black, sans-serif"
+    fontSize: "2.5rem"
+    fontWeight: 900
+    lineHeight: 1
+    letterSpacing: "-0.01em"
   figure:
-    fontFamily: "Oswald, Arial Narrow, sans-serif"
-    fontSize: "3.25rem"
-    fontWeight: 700
-    lineHeight: 0.95
+    fontFamily: "Unbounded, Arial Black, sans-serif"
+    fontSize: "2.75rem"
+    fontWeight: 900
+    lineHeight: 1
   title:
-    fontFamily: "Oswald, Arial Narrow, sans-serif"
-    fontSize: "1.25rem"
-    fontWeight: 600
-    letterSpacing: "0.03em"
+    fontFamily: "Unbounded, Arial Black, sans-serif"
+    fontSize: "0.95rem"
+    fontWeight: 900
+    letterSpacing: "0.02em"
   body:
     fontFamily: "Onest, Segoe UI, system-ui, sans-serif"
     fontSize: "15px"
@@ -158,14 +159,14 @@ components:
 
 A trading-floor board cut down to its bones: near-black panels on hairline rules, numbers set as headlines, and a single violet signal that says "look here". It is a reference tool for YouTube viewers who arrive from a video, type their skin or tap a preset, and scan supply, wear prices and signals row by row. Density is high and deliberate; every column of data stays on screen, and the type does the shouting so the surfaces never have to.
 
-The world is the user's own brutalist reference dressed in the TerbiuZ channel brand: condensed uppercase grotesque for anything that names or counts, a quiet humanist sans for data and prose, square corners, no material effects. Colour is information, not decoration. Violet is reserved for what matters now; the brand allows only black, violet and white, so status and direction are told by fill, outline and sign; CS2 rarity colours are confined to small swatches.
+The world is the user's own brutalist reference dressed in the TerbiuZ channel brand: the brand's wide Unbounded Black for anything that headlines or counts, condensed uppercase Oswald for labels, a quiet humanist sans for data and prose, square corners, no material effects. Colour is information, not decoration. Violet is reserved for what matters now; the brand allows only black, violet and white, so status and direction are told by fill, outline and sign; CS2 rarity colours are confined to small swatches.
 
 Rejected by the user: kitschy gamer aesthetics, a "boring like Excel" grid, the neon crypto-exchange look, and anything that falls apart on a phone.
 
 **Key Characteristics:**
 - Violet-black ground with two flat panel tones separated by 1px rules.
 - One signal colour (brand violet), used sparingly enough to stay loud; small violet text is always Violet Hot.
-- Oswald uppercase for titles, big numbers, labels, stamps; Onest for data and prose.
+- Unbounded Black for titles, section heads, big numbers and tier letters; Oswald uppercase for labels and stamps; Onest for data and prose.
 - Square everything: zero radius, no shadows. Only two brand touches: a soft violet glow at the top of the page and hatching on the active preset tile.
 - Every data column visible; phones get cards, not hidden fields.
 
@@ -198,23 +199,25 @@ The TerbiuZ channel palette (`brand/README.md` in the TerbiuZ project): violet-b
 
 ## Typography
 
-**Display Font:** Oswald (with Arial Narrow, sans-serif)
+**Display Font:** Unbounded Black 900 (with Arial Black, sans-serif), the TerbiuZ brand face
+**Label Font:** Oswald (with Arial Narrow, sans-serif)
 **Body Font:** Onest (with Segoe UI, system-ui, sans-serif)
 
-**Character:** Oswald is the board's voice: tall, condensed, uppercase, shouting the title and the counts. Onest is the clerk: calm, legible at 14px, with tabular figures so price columns align.
+**Character:** Unbounded is the brand's voice: wide, black, uppercase, shouting the title, the section heads and the counts, as on the channel's banner and thumbnails. Oswald is the board's labeller: tall and condensed, so column heads, captions and stamps fit a dense table. Onest is the clerk: calm, legible at 14px, with tabular figures so price columns align.
 
 ### Hierarchy
-- **Display** (Oswald 700, 5.5rem, line-height 0.86, uppercase): the page title only. 3.4rem on phones.
-- **Headline** (Oswald 700, 3.5rem, line-height 0.9, uppercase): section heads (supply vs price, cases, method). 2.4rem on phones, so it never outranks the title.
-- **Figure** (Oswald 700, 3.25rem, line-height 0.95): preset-tile counts. 2.4rem on phones.
-- **Title** (Oswald 600, 1.25rem, 0.03em, uppercase): method sub-heads.
+- **Display** (Unbounded 900, up to 5rem, line-height 0.92, -0.01em, uppercase): the page title only. Beside the 34rem search it scales with the window so «СПРАВОЧНИК» always fits its column (clamp 2.6–5rem); 4.5rem when the masthead stacks; 2–4.5rem on phones by width. The hub title runs 2.2–4.5rem.
+- **Headline** (Unbounded 900, 2.5rem, line-height 1, uppercase, balanced wrap): section heads (cases, method) and the hub project title (2.25rem). 1.6rem on phones (hub 1.5rem), so it never outranks the title.
+- **Figure** (Unbounded 900, 2.75rem, line-height 1): preset-tile counts. 2rem on phones.
+- **Title** (Unbounded 900, 0.95rem, 0.02em, uppercase): method sub-heads.
+- **Tier letter** (Unbounded 900, 12.5px): S/A/B/C inside the 22px tier box.
 - **Body** (Onest 400, 15px, line-height 1.5): prose, leads, filters; the hub runs 16–17px. Leads cap at 70ch.
 - **Data** (Onest 400, 14px, tabular numbers): table cells; skin names at 600 15px.
 - **Label** (Oswald 500, 13px, 0.05em, uppercase): nav, column heads, preset captions (14px).
 - **Stamp** (Oswald 600, 12px, 0.06em, uppercase): status stamps, SSP/SP codes, signal labels.
 
 ### Named Rules
-**The Two-Voice Rule.** Oswald names and counts; Onest reports. No third family, and Oswald never sets running prose.
+**The Three-Voice Rule.** Unbounded headlines and counts, Oswald labels, Onest reports. No fourth family. Unbounded never goes into column heads, stamps or toolbar buttons: at their sizes it is about 1.6× wider than Oswald and pushes the table past the screen. Neither display face sets running prose.
 
 ## Layout
 
@@ -241,7 +244,7 @@ Square corners everywhere (0px radius): tiles, fields, buttons, stamps. Borders 
 
 ### Buttons
 - **Shape:** square (0px).
-- **Primary** (hub "Open the reference"): violet fill, White text, Oswald 600 17px uppercase, 56px tall, 0 22px padding, trailing arrow drawn as inline SVG.
+- **Primary** (hub "Open the reference"): violet fill, White text, Unbounded 900 14px uppercase (a brand plate), 56px tall, 0 22px padding, trailing arrow drawn as inline SVG.
 - **Outline** (reset filters): transparent with a 1px Bone border, Oswald 600 14px uppercase, 42px tall; hover inverts to Bone fill with Ground text.
 - **Focus:** 2px Violet Hot outline, 2–3px offset.
 
@@ -265,7 +268,7 @@ Square corners everywhere (0px radius): tiles, fields, buttons, stamps. Borders 
 - 48px row with a 1px bottom rule. Oswald 500 13px uppercase in Ash; the TerbiuZ wordmark (white TERBIU and the violet stencil Z, inlined from `brand/logo/terbiuz-wordmark.svg`) at 15px high, linking to the hub. Hover lifts links to Bone. The optional "whole market" link hides on phones.
 
 ### Preset Tiles (signature)
-Four tiles acting as filter toggles (`aria-pressed`), each a big Oswald count over an uppercase caption. Inactive: Panel with a 1px Rule border. Active: brand violet under the brand hatching (white lines at 16%, 135°, 24px step) with White text. This is the board's signature and the loudest violet on the page.
+Four tiles acting as filter toggles (`aria-pressed`), each a big Unbounded count over an Oswald uppercase caption. Inactive: Panel with a 1px Rule border. Active: brand violet under the brand hatching (white lines at 16%, 135°, 24px step) with White text. This is the board's signature and the loudest violet on the page.
 
 ### Status Stamps and Rarity Codes
 - **Stamps:** uppercase tags with a 6.8rem minimum width so a column of them aligns. "No longer drops" is a violet outline with Violet Hot text; "recently removed" a White plate with Ground text; Armory a Bone outline; "drops" Rule Strong with Ash text.
@@ -280,7 +283,7 @@ Panel background, rows of at least 48px divided by 1px Rule (two to five reasons
 
 ### Do:
 - **Do** keep violet to the active preset, S and A tier boxes, the primary action, the search border, focus and selection, and use Violet Hot for any small violet text.
-- **Do** set titles, section heads and big counts in Oswald 700 uppercase, and data in Onest with tabular figures.
+- **Do** set titles, section heads, big counts and tier letters in Unbounded 900 uppercase, labels in Oswald, and data in Onest with tabular figures.
 - **Do** keep every table column available: pin the name and scroll sideways on narrow desktops, use labelled cards on phones.
 - **Do** state missing data in the cell («нет данных», «—») rather than hiding the row or column.
 - **Do** keep transitions to 0.15s ease-out colour changes and drop them under reduced motion.
