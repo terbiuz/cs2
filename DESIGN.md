@@ -1,19 +1,18 @@
 ---
 name: terbiuz CS2
-description: Brutalist market board for CS2 skin data — near-black, one acid-lime signal, condensed uppercase headlines.
+description: Brutalist market board for CS2 skin data in the TerbiuZ brand colours — violet-black void, one violet signal, white plates, condensed uppercase headlines.
 colors:
-  ground: "#0A0A0A"
-  panel: "#131313"
-  panel-raised: "#1B1B1B"
-  bone: "#F2F2EE"
-  ash: "#9A9A94"
-  rule: "#262626"
-  rule-strong: "#3A3A3A"
-  chart-grid: "#1F1F1F"
-  acid-lime: "#D4FF3A"
-  ember-down: "#FF6A45"
-  removed-orange: "#FF9F1C"
-  armory-violet: "#A58BFF"
+  ground: "#050407"
+  panel: "#0E0A15"
+  panel-raised: "#191222"
+  bone: "#F3F0F7"
+  white: "#FFFFFF"
+  ash: "#A49CB3"
+  rule: "#2B2238"
+  rule-strong: "#3E3250"
+  chart-grid: "#191222"
+  violet: "#8A2BFF"
+  violet-hot: "#B366FF"
   rarity-consumer: "#B0C3D9"
   rarity-industrial: "#5E98D9"
   rarity-milspec: "#4B69FF"
@@ -88,11 +87,11 @@ components:
     rounded: "{rounded.none}"
     padding: "18px 20px 16px"
   preset-tile-active:
-    backgroundColor: "{colors.acid-lime}"
-    textColor: "{colors.ground}"
+    backgroundColor: "{colors.violet}"
+    textColor: "{colors.white}"
   button-primary:
-    backgroundColor: "{colors.acid-lime}"
-    textColor: "{colors.ground}"
+    backgroundColor: "{colors.violet}"
+    textColor: "{colors.white}"
     rounded: "{rounded.none}"
     padding: "0 22px"
     height: "56px"
@@ -114,7 +113,7 @@ components:
     height: "42px"
   stamp-fixed:
     backgroundColor: "transparent"
-    textColor: "{colors.acid-lime}"
+    textColor: "{colors.violet-hot}"
     typography: "{typography.stamp}"
     padding: "0 8px"
   stamp-drop:
@@ -123,7 +122,7 @@ components:
     typography: "{typography.stamp}"
     padding: "0 8px"
   code-ssp:
-    backgroundColor: "{colors.bone}"
+    backgroundColor: "{colors.white}"
     textColor: "{colors.ground}"
     typography: "{typography.stamp}"
     padding: "0 5px"
@@ -133,8 +132,8 @@ components:
     typography: "{typography.stamp}"
     padding: "0 5px"
   tier-s:
-    backgroundColor: "{colors.acid-lime}"
-    textColor: "{colors.ground}"
+    backgroundColor: "{colors.violet}"
+    textColor: "{colors.white}"
     typography: "{typography.stamp}"
     padding: "0 4px"
   reason-list:
@@ -157,47 +156,43 @@ components:
 
 **Creative North Star: "The Market Board"**
 
-A trading-floor board cut down to its bones: near-black panels on hairline rules, numbers set as headlines, and a single acid-lime signal that says "look here". It is a reference tool for YouTube viewers who arrive from a video, type their skin or tap a preset, and scan supply, wear prices and signals row by row. Density is high and deliberate; every column of data stays on screen, and the type does the shouting so the surfaces never have to.
+A trading-floor board cut down to its bones: near-black panels on hairline rules, numbers set as headlines, and a single violet signal that says "look here". It is a reference tool for YouTube viewers who arrive from a video, type their skin or tap a preset, and scan supply, wear prices and signals row by row. Density is high and deliberate; every column of data stays on screen, and the type does the shouting so the surfaces never have to.
 
-The world is the user's own brutalist reference: condensed uppercase grotesque for anything that names or counts, a quiet humanist sans for data and prose, square corners, no material effects. Colour is information, not decoration. Lime is reserved for what matters now; orange, violet and red each carry one meaning; CS2 rarity colours are confined to small swatches.
+The world is the user's own brutalist reference dressed in the TerbiuZ channel brand: condensed uppercase grotesque for anything that names or counts, a quiet humanist sans for data and prose, square corners, no material effects. Colour is information, not decoration. Violet is reserved for what matters now; the brand allows only black, violet and white, so status and direction are told by fill, outline and sign; CS2 rarity colours are confined to small swatches.
 
 Rejected by the user: kitschy gamer aesthetics, a "boring like Excel" grid, the neon crypto-exchange look, and anything that falls apart on a phone.
 
 **Key Characteristics:**
-- Near-black ground with two flat panel tones separated by 1px rules.
-- One signal colour (acid lime), used sparingly enough to stay loud.
+- Violet-black ground with two flat panel tones separated by 1px rules.
+- One signal colour (brand violet), used sparingly enough to stay loud; small violet text is always Violet Hot.
 - Oswald uppercase for titles, big numbers, labels, stamps; Onest for data and prose.
-- Square everything: zero radius, no shadows, no gradients.
+- Square everything: zero radius, no shadows. Only two brand touches: a soft violet glow at the top of the page and hatching on the active preset tile.
 - Every data column visible; phones get cards, not hidden fields.
 
 ## Colors
 
-A near-monochrome dark board with one acid accent and three single-meaning status hues.
+The TerbiuZ channel palette (`brand/README.md` in the TerbiuZ project): violet-black neutrals, one violet and white. The interface uses no other hue; the only extra colour on the board is the game's own rarity swatches.
 
 ### Primary
-- **Acid Lime** (acid-lime): the only signal colour. Fills the active preset tile, the S tier box, the primary hub action, the source-filter chip and text selection. Outlines the search field and the "no longer drops" stamp. Marks the sorted column head, the brand word and focus rings. Text on lime is always Ground.
+- **Violet** (violet): the only signal colour. Fills the active preset tile (with the brand hatching), the S tier box, the primary hub action, the source-filter chip and text selection. Outlines the search field, the A tier box and the "no longer drops" stamp; draws the supply bars and the selected source row's underline. Text on violet is always White (5.4:1). Never small text on its own: on Ground it is only 3.8:1.
+- **Violet Hot** (violet-hot): every small violet text on dark (the sorted column head, the A tier letter, the "no longer drops" stamp, the count-line number, rising price figures, «+» signs) plus the search icon, focus rings and the text caret. 6.1:1 on Ground.
 
-### Secondary
-- **Ember Down** (ember-down): falling price figures in the 7- and 30-day columns and the «Неликвид» label. Text only, never a fill. The colour shows direction, not merit: in the short-term score a dip under the usual price is a plus.
-- **Removed Orange** (removed-orange): the "recently removed" stamp outline.
-- **Armory Violet** (armory-violet): the Armory stamp outline.
+### Neutral
+- **Ground** (ground, brand void): page background and text on white plates. A soft violet glow (radial, 30% violet) sits at the top right of each page.
+- **Panel** (panel, brand ink): tables, tiles, search, selects, the sticky name column.
+- **Panel Raised** (panel-raised, brand ink-2): row and tile hover, the selected source row, supply bar tracks (chart-grid).
+- **White** (white): plates (the SSP code, the "recently removed" stamp, the outline button's hover fill) and text on violet.
+- **Bone** (bone): primary text, falling price figures, «−» signs, the «Неликвид» label and the Armory stamp. White softened toward the brand violet so dense tables do not glare.
+- **Ash** (ash, brand mist): secondary text, column heads, captions, price moves under 3%, the "drops" stamp text.
+- **Rule** (rule, brand line): hairline dividers and panel borders. **Rule Strong** (rule-strong): select borders, header underline, drop stamp border, inspect button border, scrollbar thumb.
 
 ### Tertiary
 - **CS2 rarity set** (rarity-consumer through rarity-special): the game's own rarity colours, shown only as 10px square swatches beside a skin name.
 
-### Neutral
-- **Ground** (ground): page background and text on lime.
-- **Panel** (panel): tables, tiles, search, selects, the sticky name column.
-- **Panel Raised** (panel-raised): row and tile hover, the selected source row.
-- **Bone** (bone): primary text, SSP code fill, outline-button border.
-- **Ash** (ash): secondary text, column heads, captions, inactive stamps.
-- **Rule** (rule): hairline dividers and panel borders. **Rule Strong** (rule-strong): select borders, header underline, drop stamp border, scrollbar thumb.
-- **Chart Grid** (chart-grid): supply bar tracks.
-
 ### Named Rules
-**The One Signal Rule.** Lime marks only what matters now. A table row carries at most one or two lime fills (the S tier boxes); stamps and codes in a row are outlines or bone, never lime fills.
+**The One Signal Rule.** Violet marks only what matters now. A table row carries at most one or two violet fills (the S tier boxes); stamps and codes in a row are outlines or white plates, never violet fills.
 
-**The One Meaning Rule.** Orange, violet and red each mean exactly one thing (recently removed, Armory, falling or illiquid). Do not reuse them as decoration or for unrelated states.
+**The No Extra Hue Rule.** The brand has no red, orange or green, so meaning comes from fill, outline and signs. Status stamps: "no longer drops" a violet outline with Violet Hot text, "recently removed" a White plate with Ground text, Armory a Bone outline, "drops" a Rule Strong outline with Ash text. Price direction is carried by the sign; colour only says how notable a move is: Ash under 3%, Violet Hot for a rise, Bone for a fall.
 
 **The Swatch-Only Rarity Rule.** CS2 rarity colours appear only as 10px squares. Never tint text, rows or borders with them.
 
@@ -233,66 +228,67 @@ There is no supply-versus-price chart: it mixed every rarity and weapon type on 
 
 ## Elevation & Depth
 
-Flat. Depth comes only from tonal steps (Ground → Panel → Panel Raised) and 1px rules. There are no elevation shadows. `box-shadow` appears in two structural roles only: a 1px rule on the right edge of the pinned name column, and a 2px inset lime underline on the selected source row.
+Flat. Depth comes only from tonal steps (Ground → Panel → Panel Raised) and 1px rules. There are no elevation shadows. `box-shadow` appears in two structural roles only: a 1px rule on the right edge of the pinned name column, and a 2px inset violet underline on the selected source row.
 
 ### Named Rules
-**The Flat Board Rule.** No shadows for lift, no gradients, no blur, no glow. If something needs to stand out, it changes tone or turns lime.
+**The Flat Board Rule.** No shadows for lift, no blur. The only gradients are the two brand touches: the page-top violet glow and the hatching on the active preset tile. If something needs to stand out, it changes tone or turns violet.
 
 ## Shapes
 
-Square corners everywhere (0px radius): tiles, fields, buttons, stamps. Borders are 1px; the search field alone takes a 2px lime border, marking it as the page's main entry point. Nothing on the board is round.
+Square corners everywhere (0px radius): tiles, fields, buttons, stamps. Borders are 1px; the search field alone takes a 2px violet border, marking it as the page's main entry point. Nothing on the board is round.
 
 ## Components
 
 ### Buttons
 - **Shape:** square (0px).
-- **Primary** (hub "Open the reference"): lime fill, Ground text, Oswald 600 17px uppercase, 56px tall, 0 22px padding, trailing arrow drawn as inline SVG.
+- **Primary** (hub "Open the reference"): violet fill, White text, Oswald 600 17px uppercase, 56px tall, 0 22px padding, trailing arrow drawn as inline SVG.
 - **Outline** (reset filters): transparent with a 1px Bone border, Oswald 600 14px uppercase, 42px tall; hover inverts to Bone fill with Ground text.
-- **Focus:** 2px lime outline, 2–3px offset.
+- **Focus:** 2px Violet Hot outline, 2–3px offset.
 
 ### Chips
-- **Source filter chip:** lime fill, Ground text, Oswald 600 uppercase, 42px, with an inline close cross. Appears only while a case/collection filter is active.
-- **Hub fact chips:** 1px Rule Strong outline, Bone text, Oswald 500 13px uppercase. All outlined; lime belongs to the action beside them.
+- **Source filter chip:** violet fill, White text, Oswald 600 uppercase, 42px, with an inline close cross. Appears only while a case/collection filter is active.
+- **Hub fact chips:** 1px Rule Strong outline, Bone text, Oswald 500 13px uppercase. All outlined; violet belongs to the action beside them.
 
 ### Cards / Containers
 - **Corner Style:** square.
 - **Background:** Panel; hover to Panel Raised.
 - **Shadow Strategy:** none (see Elevation & Depth).
-- **Border:** 1px Rule; the hub project card's border turns lime on hover.
+- **Border:** 1px Rule; the hub project card's border turns violet on hover.
 - **Internal Padding:** 18–28px; tables sit flush to their panel border so row fills reach the edge.
 
 ### Inputs / Fields
-- **Search:** Panel fill, 2px lime border, 66px tall, lime magnifier icon, 18px text (16px on phones).
+- **Search:** Panel fill, 2px violet border, 66px tall, Violet Hot magnifier icon, 18px text (16px on phones).
 - **Selects:** Panel fill, 1px Rule Strong border, 42px, square.
-- **Focus:** 2px lime outline.
+- **Focus:** 2px Violet Hot outline.
 
 ### Navigation
-- 48px row with a 1px bottom rule. Oswald 500 13px uppercase in Ash; the brand word «terbiuz» in lime at 15px. Hover lifts links to Bone. The optional "whole market" link hides on phones.
+- 48px row with a 1px bottom rule. Oswald 500 13px uppercase in Ash; the TerbiuZ wordmark (white TERBIU and the violet stencil Z, inlined from `brand/logo/terbiuz-wordmark.svg`) at 15px high, linking to the hub. Hover lifts links to Bone. The optional "whole market" link hides on phones.
 
 ### Preset Tiles (signature)
-Four tiles acting as filter toggles (`aria-pressed`), each a big Oswald count over an uppercase caption. Inactive: Panel with a 1px Rule border. Active: solid lime with Ground text. This is the board's signature and the loudest lime on the page.
+Four tiles acting as filter toggles (`aria-pressed`), each a big Oswald count over an uppercase caption. Inactive: Panel with a 1px Rule border. Active: brand violet under the brand hatching (white lines at 16%, 135°, 24px step) with White text. This is the board's signature and the loudest violet on the page.
 
 ### Status Stamps and Rarity Codes
-- **Stamps:** outlined uppercase tags with a 6.8rem minimum width so a column of them aligns. "No longer drops" is lime-outlined; "recently removed" orange; Armory violet; "drops" Rule Strong with Ash text.
-- **Codes:** SSP is a Bone-filled tag with Ground text; SP is a Bone outline.
-- **Tiers:** each score cell is a 22px tier box plus the score (0–100, the skin's rank) in tabular figures. S is a lime fill with Ground text; A a lime outline with lime text; B a Rule Strong outline with Bone text; C a Rule outline with Ash text and an Ash score. Other labels are text: «Нет данных» and «Только сувенир» Ash, «Неликвид» Ember Down. «Только сувенир» breaks onto two lines so the label column keeps its width. The legend repeats the four boxes.
-- **Pluses and minuses:** one «Плюсы и минусы» column after the two signals. Each factor appears at most once, in a fixed order: supply against similar skins, new copies (case price; for knives and gloves also Covert trade-ups), price against similar skins, number of sales, price against the skin's usual 90-day level (a deep dip is a plus «на N% дешевле обычного», a rise of 3% or more a minus «уже на N% дороже обычного»), and a closing minus when a long-term tier was capped at B. Status is never repeated there because it has its own column. Onest 12px Ash; each line starts with a bold sign, lime «+» or Ember «−». A skin with nothing notable reads «ничего не выделяется» without a sign. The column is 13rem wide (11rem below 1760px).
+- **Stamps:** uppercase tags with a 6.8rem minimum width so a column of them aligns. "No longer drops" is a violet outline with Violet Hot text; "recently removed" a White plate with Ground text; Armory a Bone outline; "drops" Rule Strong with Ash text.
+- **Codes:** SSP is a White plate with Ground text; SP is a Bone outline.
+- **Tiers:** each score cell is a 22px tier box plus the score (0–100, the skin's rank) in tabular figures. S is a violet fill with White text; A a violet outline with a Violet Hot letter; B a Rule Strong outline with Bone text; C a Rule outline with Ash text and an Ash score. Other labels are text: «Нет данных» and «Только сувенир» Ash, «Неликвид» Bone. «Только сувенир» breaks onto two lines so the label column keeps its width. The legend repeats the four boxes.
+- **Pluses and minuses:** one «Плюсы и минусы» column after the two signals. Each factor appears at most once, in a fixed order: supply against similar skins, new copies (case price; for knives and gloves also Covert trade-ups), price against similar skins, number of sales, price against the skin's usual 90-day level (a deep dip is a plus «на N% дешевле обычного», a rise of 3% or more a minus «уже на N% дороже обычного»), and a closing minus when a long-term tier was capped at B. Status is never repeated there because it has its own column. Onest 12px Ash; each line starts with a bold sign, Violet Hot «+» or Bone «−». A skin with nothing notable reads «ничего не выделяется» without a sign. The column is 13rem wide (11rem below 1760px).
 
 ### Data Table
-Panel background, rows of at least 48px divided by 1px Rule (two to five reasons grow most rows to 62–109px; the longest, five long reasons, reaches 171px), Panel Raised on hover. Column heads are sort buttons in Oswald 500 uppercase Ash; the sorted column turns lime with a direction caret. Supply carries a 44×6px log-scale bar in lime on a Chart Grid track. «Продаж» (count of CSFloat sales) and «Ликвидность» (sales as a share of supply) sit side by side. The name column is 18rem (17.5rem below 1760px); long knife names wrap, a phase in brackets stays on one line, and the SSP or SP code follows the last word. A 30px square inspect button with an eye icon sits at the right of every name cell, centred across the name and case lines: Rule Strong outline and Ash icon, Bone on hover. It is a `steam://` preview link that opens the skin in CS2, so it lives in the pinned name column instead of a column of its own (a separate column pushed the table past 1694px), and touch-screen cards drop it because the link needs Steam on a computer. The legend explains it. At 1694px and wider every column fits without sideways scrolling.
+Panel background, rows of at least 48px divided by 1px Rule (two to five reasons grow most rows to 62–109px; the longest, five long reasons, reaches 171px), Panel Raised on hover. Column heads are sort buttons in Oswald 500 uppercase Ash; the sorted column turns Violet Hot with a direction caret. Supply carries a 44×6px log-scale bar in violet on a Chart Grid track. The 7- and 30-day figures follow the No Extra Hue Rule. «Продаж» (count of CSFloat sales) and «Ликвидность» (sales as a share of supply) sit side by side. The name column is 18rem (17.5rem below 1760px); long knife names wrap, a phase in brackets stays on one line, and the SSP or SP code follows the last word. A 30px square inspect button with an eye icon sits at the right of every name cell, centred across the name and case lines: Rule Strong outline and Ash icon, Bone on hover. It is a `steam://` preview link that opens the skin in CS2, so it lives in the pinned name column instead of a column of its own (a separate column pushed the table past 1694px), and touch-screen cards drop it because the link needs Steam on a computer. The legend explains it. At 1694px and wider every column fits without sideways scrolling.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep lime to the active preset, S and A tier boxes, the primary action, the search border, focus and selection.
+- **Do** keep violet to the active preset, S and A tier boxes, the primary action, the search border, focus and selection, and use Violet Hot for any small violet text.
 - **Do** set titles, section heads and big counts in Oswald 700 uppercase, and data in Onest with tabular figures.
 - **Do** keep every table column available: pin the name and scroll sideways on narrow desktops, use labelled cards on phones.
 - **Do** state missing data in the cell («нет данных», «—») rather than hiding the row or column.
 - **Do** keep transitions to 0.15s ease-out colour changes and drop them under reduced motion.
 
 ### Don't:
-- **Don't** fill stamps or rarity codes with lime; a row with three lime blocks has lost its signal.
-- **Don't** use rounded corners, drop shadows, gradients or glows.
+- **Don't** fill stamps or rarity codes with violet; a row with three violet blocks has lost its signal.
+- **Don't** use rounded corners or drop shadows, or add glows and gradients beyond the page-top glow and the preset hatching.
+- **Don't** bring back lime, red or orange: the site follows the TerbiuZ brand palette, and the brand book is the source of truth for its colours.
 - **Don't** drift toward kitschy gamer styling, a plain spreadsheet look, or a neon crypto-exchange terminal.
 - **Don't** colour text, rows or borders with CS2 rarity colours; they live in 10px swatches.
 - **Don't** let a section headline outrank the page title on phones.
