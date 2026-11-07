@@ -206,7 +206,7 @@ The TerbiuZ channel palette (`brand/README.md` in the TerbiuZ project): violet-b
 **Character:** Unbounded is the brand's voice: wide, black, uppercase, shouting the title, the section heads and the counts, as on the channel's banner and thumbnails. Oswald is the board's labeller: tall and condensed, so column heads, captions and stamps fit a dense table. Onest is the clerk: calm, legible at 14px, with tabular figures so price columns align.
 
 ### Hierarchy
-- **Display** (Unbounded 900, up to 5rem, line-height 0.92, -0.01em, uppercase): the page title only. Beside the 34rem search it scales with the window so «СПРАВОЧНИК» always fits its column (clamp 2.6–5rem); 4.5rem when the masthead stacks; 2–4.5rem on phones by width. The hub title runs 2.2–4.5rem.
+- **Display** (Unbounded 900, up to 5rem, line-height 0.92, -0.01em, uppercase): the page title only. Beside the 34rem search it scales with the window so «ИНВЕСТИЦИИ», its longest word, always fits its column (clamp 2.6–5rem); 4.5rem when the masthead stacks; 2–4.5rem on phones by width. The hub title runs 2.2–4.5rem.
 - **Headline** (Unbounded 900, 2.5rem, line-height 1, uppercase, balanced wrap): section heads (cases, method) and the hub project title (2.25rem). 1.6rem on phones (hub 1.5rem), so it never outranks the title.
 - **Figure** (Unbounded 900, 2.75rem, line-height 1): preset-tile counts. 2rem on phones.
 - **Title** (Unbounded 900, 0.95rem, 0.02em, uppercase): method sub-heads.
@@ -244,7 +244,7 @@ Square corners everywhere (0px radius): tiles, fields, buttons, stamps. Borders 
 
 ### Buttons
 - **Shape:** square (0px).
-- **Primary** (hub "Open the reference"): violet fill, White text, Unbounded 900 14px uppercase (a brand plate), 56px tall, 0 22px padding, trailing arrow drawn as inline SVG.
+- **Primary** (hub "Open the table"): violet fill, White text, Unbounded 900 14px uppercase (a brand plate), 56px tall, 0 22px padding, trailing arrow drawn as inline SVG.
 - **Outline** (reset filters): transparent with a 1px Bone border, Oswald 600 14px uppercase, 42px tall; hover inverts to Bone fill with Ground text.
 - **Focus:** 2px Violet Hot outline, 2–3px offset.
 
